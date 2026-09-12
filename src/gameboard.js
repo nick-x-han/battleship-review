@@ -52,7 +52,7 @@ class Gameboard {
     return true;
   }
 
-  placeShip(ship, origin, isVertical) {
+  placeShip(ship, origin, isVertical = true) {
     if (ship.getLength() > 4) {
       throw new Error("Cannot place ships with length > 4");
     }
@@ -79,6 +79,22 @@ class Gameboard {
         this.#board[origin[0]][origin[1] + i] = ship;
       }
     }
+  }
+
+  receiveAttack(coordinates) {
+    let [x, y] = coordinates;
+    if (this.#board[x][y] === 0) {
+      this.#board[x][y] = -1;
+      return false;
+    }
+    if (this.#board[x][y] instanceof Object) {
+      this.#board[x][y].hit();
+      this.#board[x][y] = 1;
+      return true;
+    }
+    //if this coord was already attacked
+    console.log("Already missed or succeeded here before");
+    return false;
   }
 
   get board() {

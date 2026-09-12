@@ -1,4 +1,4 @@
-import { test, expect } from "@jest/globals"
+import { test, expect, fn } from "@jest/globals"
 import { Ship } from "./ship";
 import { Gameboard } from "./gameboard";
 
@@ -82,13 +82,37 @@ test("cannot overlap two ships", () => {
   expect(() => gameboard.placeShip(ship2, [2, 0], true)).toThrow("Cannot overlap onto another ship");
 })
 
-//can delete a ship with hits()
-  // 1 for successful hit, -1 for not
-//two different ships are treated separately
+test("when a ship is attacked, the coordinate's value becomes 1", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(1);
+  gameboard.placeShip(ship, [3, 3], true);
+  expect(gameboard.board[3][3]).toBe(ship);
+  gameboard.receiveAttack([3, 3]);
+  expect(gameboard.board[3][3]).toBe(1);
+})
 
+test("when a 2-length ship is attacked twice in the same spot, it is not sunk", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(2);
+  gameboard.placeShip(ship, [3, 3], true);
+  gameboard.receiveAttack([3, 3]);
+  gameboard.receiveAttack([3, 3]);
+  expect(ship.isSunk()).toBe(false);
+})
 
+test("when an empty spot is attacked, the coordinate's value becomes -1", () => {
+  let gameboard = new Gameboard();
+  gameboard.receiveAttack([3, 3]);
+  expect(gameboard.board[3][3]).toBe(-1);
+})
 
-//need to figure out how to deal with the top and bottom edges with current placeShip
-//maybe automatically right or down unless at bottom or right, then flip?
-  //simply just if anything goes out of bounds just go other direction?
-  //or maybe just do math so that it's always default down adn right unless the length would prohibit down/right in which case it goes other direction
+test("after a successful attack, reattacking will not change the coord value from 1", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(2);
+  gameboard.placeShip(ship, [3, 3], true);
+  expect(gameboard.receiveAttack([3, 3])).toBe(true);
+  expect(gameboard.receiveAttack([3, 3])).toBe(false);
+  expect(gameboard.board[3][3]).toBe(1);
+})
+
+//idea: cell class to track attacked or not
