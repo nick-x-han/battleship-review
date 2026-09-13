@@ -1,19 +1,25 @@
 import { Player } from "./player.js";
-import "./styles.css"
+import "./styles.css";
 
 const contentDiv = document.querySelector("#content");
 const BOARD_SIZE = 10;
-const PLAYER_ID = [1, 2];
+const PLAYER_INDEX = [0, 1];
 
-export function playGame () {
+export function playGame() {
   let player = new Player();
   let cpu = new Player();
-  let playerTurn = PLAYER_ID[0];
+  let players = [player, cpu];
+  let playerTurn = PLAYER_INDEX[0];
 
-  renderBoard(player, PLAYER_ID[0]);
-  renderBoard(cpu, PLAYER_ID[1]);
+  renderBoard(player, PLAYER_INDEX[0]);
+  renderBoard(cpu, PLAYER_INDEX[1]);
 
-  
+  contentDiv.addEventListener("click", (e) => {
+    const playerIndex = e.target.parentNode.dataset.playerID;
+    if (playerIndex && playerIndex === playerTurn) {
+      
+    }
+  });
 }
 
 function renderBoard(player, playerID) {
@@ -25,11 +31,9 @@ function renderBoard(player, playerID) {
       let value = board[i][j];
       if (value === -1) {
         cell.textContent = "X";
-      }
-      else if (value === 1) {
+      } else if (value === 1) {
         cell.textContent = "O";
-      }
-      else if (value !== 0) {
+      } else if (value !== 0) {
         cell.classList.add("ship");
       }
 
