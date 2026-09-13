@@ -1,4 +1,4 @@
-import { test, expect, fn } from "@jest/globals"
+import { test, expect } from "@jest/globals"
 import { Ship } from "./ship";
 import { Gameboard } from "./gameboard";
 
