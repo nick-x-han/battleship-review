@@ -8,18 +8,19 @@
   background-color: gray;
 }
 
-
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
   border: 1px solid black;
 
-  &:hover {
-    background-color: rgb(244, 235, 235);
-  }
+  &.interactable {
+    &:hover {
+      background-color: rgb(244, 235, 235);
+    }
 
-  &:active {
-    background-color: rgb(209, 203, 203);
+    &:active {
+      background-color: rgb(209, 203, 203);
+    }
   }
 }
 
@@ -32,8 +33,6 @@
   grid-template-columns: repeat(10, var(--cell-size));
   grid-template-rows: repeat(10, var(--cell-size));
 }
-
-
 
 #content {
   display: flex;

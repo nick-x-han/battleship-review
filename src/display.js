@@ -8,11 +8,10 @@ const PLAYER_INDEX = [0, 1];
 export function playGame() {
   let player = new Player();
   let cpu = new Player();
-  let players = [player, cpu];
   let playerTurn = PLAYER_INDEX[0];
 
-  renderBoard(player, PLAYER_INDEX[0]);
-  renderBoard(cpu, PLAYER_INDEX[1]);
+  renderBoard(player);
+  renderBoard(cpu, true);
 
   contentDiv.addEventListener("click", (e) => {
     const playerIndex = e.target.parentNode.dataset.playerID;
@@ -22,7 +21,7 @@ export function playGame() {
   });
 }
 
-function renderBoard(player, playerID) {
+function renderBoard(player, isCPU) {
   let board = player.board.board;
   let boardDiv = document.createElement("div");
   for (let i = 0; i < BOARD_SIZE; i++) {
@@ -38,11 +37,13 @@ function renderBoard(player, playerID) {
       }
 
       cell.classList.add("cell");
+      if (isCPU) {
+        cell.classList.add("interactable");
+      }
       cell.dataset.row = i;
       cell.dataset.column = j;
 
       boardDiv.classList.add("board");
-      boardDiv.dataset.playerID = playerID;
       boardDiv.append(cell);
     }
   }
