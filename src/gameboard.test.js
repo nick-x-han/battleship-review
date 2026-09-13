@@ -115,6 +115,15 @@ test("after a successful attack, reattacking will not change the coord value fro
   expect(gameboard.board[3][3]).toBe(1);
 })
 
+test("attacking one part of a ship won't affect the others", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(3);
+  gameboard.placeShip(ship, [0, 0]);
+  gameboard.receiveAttack([0, 0]);
+  expect(gameboard.board[0][0]).toBe(1);
+  expect(gameboard.board[1][0]).toBe(ship);
+})
+
 //idea: cell class to track attacked or not
 
 // make receive attack return the square's value prior to attack

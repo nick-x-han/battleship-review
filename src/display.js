@@ -1,16 +1,21 @@
 import { Player } from "./player.js";
+import { Ship } from "./ship.js";
 import "./styles.css";
 
 const contentDiv = document.querySelector("#content");
 const BOARD_SIZE = 10;
 
 export function playGame() {
-  let player = new Player();
+  let human = new Player();
   let cpu = new Player();
 
-  const humanBoardDiv = renderBoard(player);
+  let ship = new Ship(3);
+  cpu.board.placeShip(ship, [0, 0]);
+
+  const humanBoardDiv = renderBoard(human);
   const cpuBoardDiv = renderBoard(cpu, true);
-  cpuBoardDiv.addEventListener("click", (e) => onClickEnemyBoard(e, player));
+
+  cpuBoardDiv.addEventListener("click", (e) => onClickEnemyBoard(e, human));
 
   contentDiv.append(humanBoardDiv, cpuBoardDiv);
 }
@@ -60,3 +65,10 @@ function onClickEnemyBoard(e, cpu) {
 }
 
 function enemyMove() {}
+
+
+
+//placement UI will be each of the 10 ships 
+//having a form, and each its own confirm
+//button to make checking overlaps easier
+//OR just show only human board 
