@@ -1,0 +1,38 @@
+:root {
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  --cell-size: 25px;
+  background-color: gray;
+}
+
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid black;
+
+  &:hover {
+    background-color: rgb(244, 235, 235);
+  }
+}
+
+.ship {
+  background-color: black;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, var(--cell-size));
+  grid-template-rows: repeat(10, var(--cell-size));
+}
+
+
+
+#content {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 2em;
+}
