@@ -116,3 +116,6 @@ test("after a successful attack, reattacking will not change the coord value fro
 })
 
 //idea: cell class to track attacked or not
+
+// make receive attack return the square's value prior to attack
+  // make the value become the length of the ship?
