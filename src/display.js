@@ -3,27 +3,29 @@ import "./styles.css";
 
 const contentDiv = document.querySelector("#content");
 const BOARD_SIZE = 10;
-const PLAYER_INDEX = [0, 1];
 
 export function playGame() {
   let player = new Player();
   let cpu = new Player();
-  let playerTurn = PLAYER_INDEX[0];
 
-  renderBoard(player);
-  renderBoard(cpu, true);
+  const humanBoardDiv = renderBoard(player);
+  const cpuBoardDiv = renderBoard(cpu, true);
+  cpuBoardDiv.addEventListener("click", (e) => onClickEnemyBoard(e, player));
 
-  contentDiv.addEventListener("click", (e) => {
-    const playerIndex = e.target.parentNode.dataset.playerID;
-    if (playerIndex && playerIndex === playerTurn) {
-      
-    }
-  });
+  contentDiv.append(humanBoardDiv, cpuBoardDiv);
 }
 
 function renderBoard(player, isCPU) {
-  let board = player.board.board;
   let boardDiv = document.createElement("div");
+
+  boardDiv.classList.add("board");
+  appendAndReplaceCells(player, boardDiv, isCPU);
+  return boardDiv;
+}
+
+function appendAndReplaceCells(player, parent, isCPU) {
+  let board = player.board.board;
+  parent.replaceChildren();
   for (let i = 0; i < BOARD_SIZE; i++) {
     for (let j = 0; j < BOARD_SIZE; j++) {
       let cell = document.createElement("div");
@@ -37,15 +39,24 @@ function renderBoard(player, isCPU) {
       }
 
       cell.classList.add("cell");
-      if (isCPU) {
-        cell.classList.add("interactable");
-      }
       cell.dataset.row = i;
       cell.dataset.column = j;
 
-      boardDiv.classList.add("board");
-      boardDiv.append(cell);
+      if (isCPU) {
+        cell.classList.add("interactable");
+      }
+
+      parent.append(cell);
     }
   }
-  contentDiv.append(boardDiv);
 }
+
+function onClickEnemyBoard(e, cpu) {
+  let x = e.target.dataset.row;
+  let y = e.target.dataset.column;
+  cpu.board.receiveAttack([x, y]);
+
+  appendAndReplaceCells(cpu, e.currentTarget, true);
+}
+
+function enemyMove() {}
