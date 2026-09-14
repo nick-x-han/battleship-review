@@ -1,38 +1,19 @@
-import { Player } from "./player.js";
-import { Ship } from "./ship.js";
 import "./styles.css";
 
-const contentDiv = document.querySelector("#content");
 const BOARD_SIZE = 10;
 
-export function playGame() {
-  let human = new Player();
-  let cpu = new Player();
 
-  let ship = new Ship(3);
-  cpu.board.placeShip(ship, [0, 0]);
 
-  const humanBoardDiv = renderBoard(human);
-  const cpuBoardDiv = renderBoard(cpu, true);
 
-  cpuBoardDiv.onclick = (e) => onClickEnemyBoard(e, human);
-
-  contentDiv.append(humanBoardDiv, cpuBoardDiv);
-}
-
-function playTurn(player, isCPU) {
-  if (isCPU) cpuMove();
-}
-
-function renderBoard(player, isCPU) {
+export function renderBoard(player) {
   let boardDiv = document.createElement("div");
 
   boardDiv.classList.add("board");
-  appendAndReplaceCells(player, boardDiv, isCPU);
+  appendAndReplaceCells(player, boardDiv);
   return boardDiv;
 }
 
-function appendAndReplaceCells(player, parent, isCPU) {
+export function appendAndReplaceCells(player, parent) {
   let board = player.board.board;
   parent.replaceChildren();
   for (let i = 0; i < BOARD_SIZE; i++) {
@@ -51,7 +32,7 @@ function appendAndReplaceCells(player, parent, isCPU) {
       cell.dataset.row = i;
       cell.dataset.column = j;
 
-      if (isCPU) {
+      if (player.isCPU) {
         cell.classList.add("interactable");
       }
 
@@ -60,17 +41,8 @@ function appendAndReplaceCells(player, parent, isCPU) {
   }
 }
 
-function onClickEnemyBoard(e, enemy) {
-  let x = e.target.dataset.row;
-  let y = e.target.dataset.column;
-  enemy.board.receiveAttack([x, y]);
 
-  appendAndReplaceCells(enemy, e.currentTarget, true);
-  playTurn(enemy, true);
-  e.currentTarget.onclick = null;
-}
 
-function cpuMove() {}
 
 
 
@@ -81,6 +53,3 @@ function cpuMove() {}
 
 //random placements function; used for both cpu and also
 //is an option for player if needed
-
-//player class needs CPU argument for easy access and 
-//simplify arguments here

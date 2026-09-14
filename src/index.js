@@ -1,3 +1,4 @@
-import { playGame } from "./display.js";
+import { GameInfo } from "./gameInfo.js";
 
-playGame();
+let game = new GameInfo(false, true);
+game.startGame();
