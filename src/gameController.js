@@ -1,5 +1,6 @@
 import {
   appendCells,
+  editMessage,
   renderBoard,
   stopInteractivity,
   toggleClasses,
@@ -9,7 +10,6 @@ import { generateRandomCoordinates } from "./gameboard.js";
 import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
-const lastMoveDiv = document.querySelector("#lastMove");
 const BOARD_SIZE = 10;
 
 export class GameController {
@@ -53,7 +53,7 @@ export class GameController {
 
     appendCells(this.player1, this.player1.dom);
     appendCells(this.player2, this.player2.dom);
-    lastMoveDiv.textContent = `Game started. ${this.activePlayer.name}'s turn.`;
+    editMessage(`Game started. ${this.activePlayer.name}'s turn.`);
 
     contentDiv.append(this.player1.dom, this.player2.dom);
 
@@ -87,7 +87,7 @@ export class GameController {
       if (this.activePlayer.isCPU)
         await new Promise((resolve) => setTimeout(resolve, this.cpuMoveDelay));
     }
-    lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
+    editMessage(`${this.activePlayer.name} just attacked (${x}, ${y})`);
 
     let index = x * BOARD_SIZE + y;
     let cell = enemy.dom.children[index];
@@ -99,12 +99,12 @@ export class GameController {
         let coords = enemy.board.getShipCoordinates(attack.ship);
         for (let coord of coords) {
           let index = +coord[0] * BOARD_SIZE + +coord[1];
-          let cell = enemy.dom.children[index];
-          cell.classList.add("sunk");
+          let shipCell = enemy.dom.children[index];
+          shipCell.classList.add("sunk");
         }
       }
       if (enemy.board.isDefeated()) {
-        lastMoveDiv.textContent = `${this.activePlayer.name} just won!`;
+        editMessage(`${this.activePlayer.name} just won!`);
         this.endGame();
         return;
       }
