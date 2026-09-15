@@ -34,7 +34,33 @@
 }
 
 .ship {
-  background-color: black;
+  border-color: red;
+}
+
+.missed {
+  background-color: rgb(116, 108, 108);
+  &::after {
+    content: "•";
+  }
+}
+
+.hit {
+  background-color: aqua;
+  &::after {
+    content: "⦿";
+  }
+}
+
+.enemy {
+  .ship {
+
+  }
+}
+
+.player {
+  .ship {
+
+  }
 }
 
 .board {
@@ -52,7 +78,6 @@
 
 #header {
   & div {
-    color: red;
     font-size: 2rem;
   }
 }

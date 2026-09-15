@@ -21,13 +21,10 @@ export function appendAndReplaceCells(player, parent) {
       let cell = document.createElement("div");
       let value = board[i][j];
       if (value === -1) {
-        cell.textContent = "X";
+        cell.classList.add("missed");
       } else if (value === 1) {
-        cell.textContent = "O";
+        cell.classList.add("hit");
       } else if (value !== 0) {
-        if (player.isCPU) {
-          
-        }
         cell.classList.add("ship");
       }
 
