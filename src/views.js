@@ -19,23 +19,23 @@ export function initializeViews(delay) {
   displayNextView();
 }
 
-function queueView(view) {
-  viewsQueue.push(view);
+function queueView(view, parent = headerDiv) {
+  viewsQueue.push({ view: view, parent });
 }
 
-function displayNextView(parent = headerDiv) {
+function displayNextView() {
   if (viewsQueue.length === 0) return;
   resetAll();
-  let currentView = (viewsQueue.shift())();
-  parent.append(currentView);
+  let viewObject = viewsQueue.shift();
+  viewObject.parent.append(viewObject.view());
 }
 
-function createViewButton(text, onClick, viewParent) {
+function createViewButton(text, onClick) {
   let nextViewButton = document.createElement("button");
   nextViewButton.textContent = text;
   if (onClick)
     nextViewButton.addEventListener("click", onClick, { once: true });
-  nextViewButton.addEventListener("click", () => displayNextView(viewParent));
+  nextViewButton.addEventListener("click", () => displayNextView());
   return nextViewButton;
 }
 
@@ -83,10 +83,10 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   const player2 = new Player(name2, isCPU2);
   game = new GameController(player1, player2, cpuDelay);
 
-  if (!player1.isCPU) queueView(() => placeShipsView(player1));
-  if (!player2.isCPU) queueView(() => placeShipsView(player2));
+  if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
+  if (!player2.isCPU) queueView(() => placeShipsView(player2), contentDiv);
 
-  queueView(() => gameView());
+  queueView(() => gameView(), contentDiv);
 }
 
 function chooseNameView() {
@@ -130,7 +130,7 @@ function placeShipsView(player) {
   let shipBoard = renderBoard(player);
   let descriptionText = createTextDiv(`${player.name} to Place Ships`);
   headerDiv.append(descriptionText);
-  
+
   return shipBoard;
 }
 

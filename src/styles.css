@@ -14,6 +14,11 @@
   background-color: gray;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
