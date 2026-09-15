@@ -27,8 +27,10 @@ export class GameInfo {
   placeShips(player) {
     let ship = new Ship(3);
     let ship2 = new Ship(4);
+    let ship3 = new Ship(1);
     player.board.placeShip(ship, [0, 0]);
     player.board.placeShip(ship2, [4, 0], true);
+    player.board.placeShip(ship3, [9, 0], true);
 
     appendCells(player, player.dom);
   }
@@ -85,6 +87,14 @@ export class GameInfo {
     this.updateCell(enemy, x, y);
 
     if (attack.result === "hit") {
+      if (attack.ship.isSunk()) {
+        let coords = enemy.board.getShipCoordinates(attack.ship);
+        for (let coord of coords) {
+          let index = +coord[0] * BOARD_SIZE + +coord[1];
+          let cell = enemy.dom.children[index];
+          cell.classList.add("sunk");
+        }
+      }
       if (enemy.board.isDefeated()) {
         lastMoveDiv.textContent = `${this.activePlayer.name} just won!`;
         this.endGame();
@@ -119,15 +129,6 @@ export class GameInfo {
       cell.classList.add("missed");
     } else if (value === 1) {
       cell.classList.add("hit");
-      let ships = player.board.getShips();
-      for (let ship of ships) {
-        let coords = player.board.getShipCoordinates(ship);
-        if (coords.some(([a, b]) => a === x && b === y)) {
-          if (true) {
-            
-          }
-        };
-      }
     } else if (value !== 0) {
       cell.classList.add("ship");
     }

@@ -35,17 +35,11 @@
   }
 }
 
-.ship {
-  border-color: red;
-  border-width: 5px;
-}
-
 .missed {
   background-color: rgb(90, 88, 88);
   &::after {
     content: "•";
   }
-
 }
 
 .hit {
@@ -56,10 +50,7 @@
 
 .enemy {
   background-color: rgb(214, 154, 228);
-  & .ship {
-    border-color: black;
-    border-width: 1px;
-  }
+
   & .missed {
     background-color: rgb(172, 114, 185);
   }
@@ -67,8 +58,9 @@
 
 .player {
   & .ship {
+    border-color: green;
+    border-width: 5px;
   }
-
   & .top-edge {
     border-top: none;
   }
@@ -82,6 +74,29 @@
   }
 
   & .right-edge {
+    border-right: none;
+  }
+}
+
+.sunk {
+   &.ship {
+    border-color: green;
+    border-width: 5px;
+  }
+
+  &.top-edge {
+    border-top: none;
+  }
+
+  &.bottom-edge {
+    border-bottom: none;
+  }
+
+  &.left-edge {
+    border-left: none;
+  }
+
+  &.right-edge {
     border-right: none;
   }
 }
