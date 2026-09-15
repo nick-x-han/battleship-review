@@ -26,8 +26,6 @@ initializeViews();
 
 //DISPLAY.js has function to just modify lastMoveDiv with input text
 
-//fix bug with clicking during oppoennt turn
-
 //for dragging ships, just create new Ship(1) for each position to check
   //will need refactoring probably cause how will a dom ship be tracked?
     //maybe create a new dom object with the cells that is position: relative

@@ -97,6 +97,6 @@ function gameDisplay(name1, name2, isCPU1, isCPU2) {
   const player2 = new Player(name2, isCPU2);
   // if (!player1.isCPU) placeShipsView(player1);
   // if (!player2.isCPU) placeShipsView(player2);
-  let game = new GameController(player1, player2, 1000);
+  let game = new GameController(player1, player2, 500);
   game.startGame();
 }

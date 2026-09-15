@@ -61,13 +61,13 @@ export class GameController {
   }
 
   startTurn(player, enemy) {
-    // contentDiv.insertBefore(player.dom, enemy.dom);
+    // swapDomPositions(player.dom, enemy.dom);
     toggleClasses(player, enemy);
+    stopInteractivity(player.dom);
 
     if (player.isCPU) this.#cpuMove(enemy);
     else {
       enemy.dom.onclick = (e) => this.#onClickEnemyBoard(e, enemy);
-      player.dom.onclick = null;
     }
   }
   switchTurn() {
