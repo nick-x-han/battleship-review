@@ -5,9 +5,36 @@ import { BOARD_SIZE, FLEET_SIZE } from "./gameboard.js";
 
 let headerDiv = document.querySelector("#header");
 let contentDiv = document.querySelector("#content");
+let buttonDiv = document.querySelector("#button-container");
+let viewsArray = [];
+let game;
+
+// let confirmButton = document.querySelector("#");
+//onclick: move to next view in list
+//views return a small object for a result?
 
 export function initializeViews() {
-  headerDiv.append(chooseNameView());
+  queueView(chooseNameView());
+  displayNextView();
+}
+
+function queueView(view) {
+  viewsArray.push(view);
+}
+
+function displayNextView() {
+  if (viewsArray.length === 0) return;
+  buttonDiv.replaceChildren();
+  let currentView = viewsArray.shift();
+  headerDiv.append(currentView);
+}
+
+function createNewButton(text, onClick) {
+  let nextViewButton = document.createElement("button");
+  nextViewButton.textContent = text;
+  if (onClick) nextViewButton.addEventListener("click", onClick, { once: true });
+  nextViewButton.addEventListener("click", () => displayNextView());
+  return nextViewButton;
 }
 
 function nameSelectView(isDefaultHuman = true) {
@@ -33,6 +60,14 @@ function nameInputView(defaultName = "Player") {
   return playerInput;
 }
 
+function appendToHeader(text, ) {
+  
+}
+
+function resetHeader() {
+  headerDiv.replaceChildren();
+}
+
 function onConfirmNames(name1, name2, selected1, selected2) {
   headerDiv.replaceChildren();
   let namesDiv = document.createElement("div");
@@ -47,7 +82,14 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   let isCPU1 = selected1 === "CPU" ? true : false;
   let isCPU2 = selected2 === "CPU" ? true : false;
 
-  gameDisplay(name1, name2, isCPU1, isCPU2);
+  const player1 = new Player(name1, isCPU1);
+  const player2 = new Player(name2, isCPU2);
+  game = new GameController(player1, player2, 500);
+  queueView();
+
+  if (!player1.isCPU) queueView(placeShipsView(player1));
+  if (!player2.isCPU) queueView(placeShipsView(player2));
+  // gameDisplay(name1, name2, isCPU1, isCPU2);
 }
 
 function chooseNameView() {
@@ -67,15 +109,13 @@ function chooseNameView() {
 
   playersDiv.append(player1Div, player2Div);
 
-  let confirmButton = document.createElement("button");
-  confirmButton.textContent = "Start Game";
-  confirmButton.onclick = () =>
+  let confirmButton = createNewButton("Start Game", () =>
     onConfirmNames(
       player1Input.value,
       player2Input.value,
       player1Select.value,
       player2Select.value,
-    );
+    ));
 
   let outputDiv = document.createElement("div");
   outputDiv.append(playersDiv, confirmButton);
@@ -88,15 +128,19 @@ function placeShipsView(player) {
   // player.board.
   let shipBoard = renderBoard(player);
   // appendCells(player, shipBoard);
-  contentDiv.append(shipBoard);
-  
+  return shipBoard;
 }
 
-function gameDisplay(name1, name2, isCPU1, isCPU2) {
-  const player1 = new Player(name1, isCPU1);
-  const player2 = new Player(name2, isCPU2);
-  // if (!player1.isCPU) placeShipsView(player1);
-  // if (!player2.isCPU) placeShipsView(player2);
-  let game = new GameController(player1, player2, 500);
-  game.startGame();
+// function gameDisplay(name1, name2, isCPU1, isCPU2) {
+//   const player1 = new Player(name1, isCPU1);
+//   const player2 = new Player(name2, isCPU2);
+//   // if (!player1.isCPU) placeShipsView(player1);
+//   // if (!player2.isCPU) placeShipsView(player2);
+//   game = new GameController(player1, player2, 500);
+//   game.startGame();
+// }
+
+function gameView() {
+  let player1 = game.player1;
+  let player2 = game.player2;
 }

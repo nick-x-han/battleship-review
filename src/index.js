@@ -4,16 +4,6 @@ import { initializeViews } from "./views.js";
 
 initializeViews();
 
-
-//for ship choosing, add a view to a list and call the choose positions view
-//for each player in that list if it's a human.
-//make it show the live positions of each ship, and confirm button doens't work
-//if any overlaps or out of bounds
-//each ship will just have a section for its length and then for each ship of that
-//length just have two number inputs, with live updating on the board
-  //live updating: onchange (so whenever a coordinate input is updated)
-
-
 //switch sides so active player always on left
 
 //no adjacent ships?
@@ -24,7 +14,6 @@ initializeViews();
   //this should work with creting a gameboard just for placing ships or whatever
   //since appendCells only displays ships now 
 
-//DISPLAY.js has function to just modify lastMoveDiv with input text
 
 //for dragging ships, just create new Ship(1) for each position to check
   //will need refactoring probably cause how will a dom ship be tracked?
@@ -32,3 +21,5 @@ initializeViews();
     //and z index lower so that it can be dragged propelry?
 
 //for views, make an array and a generic function that will add it to content?
+
+//make the gameDisplay a view itself
