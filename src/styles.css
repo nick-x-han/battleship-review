@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   margin: 0;
   padding: 0;
@@ -31,12 +37,15 @@
 
 .ship {
   border-color: red;
+  border-width: 5px;
 }
 
 .missed {
+  background-color: rgb(90, 88, 88);
   &::after {
     content: "•";
   }
+
 }
 
 .hit {
@@ -49,6 +58,10 @@
   background-color: rgb(214, 154, 228);
   & .ship {
     border-color: black;
+    border-width: 1px;
+  }
+  & .missed {
+    background-color: rgb(172, 114, 185);
   }
 }
 
@@ -58,6 +71,7 @@
 
   & .top-edge {
     border-top: none;
+    /* border */
   }
 
   & .bottom-edge {
