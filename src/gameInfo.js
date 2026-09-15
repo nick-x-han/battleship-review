@@ -1,13 +1,12 @@
 import { appendAndReplaceCells, renderBoard } from "./display.js";
-import { Player } from "./player.js";
 import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
 
 export class GameInfo {
-  constructor(player1IsCPU, player2IsCPU) {
-    this.player1 = new Player(player1IsCPU);
-    this.player2 = new Player(player2IsCPU);
+  constructor(player1, player2) {
+    this.player1 = player1;
+    this.player2 = player2;
     this.activePlayer = this.player1;
 
     this.player1.dom = renderBoard(this.player1);
