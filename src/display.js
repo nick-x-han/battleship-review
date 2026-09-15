@@ -46,7 +46,7 @@ function adjustShipBorders(board, cellsParent) {
 
 function editBorders(coords, cellsParent) {
   if (coords.length === 1) return;
-  let isVertical = coords[0].x - coords[1].x === 0 ? false : true;
+  let isVertical = coords[0][0] - coords[1][0] === 0 ? false : true;
 
   for (let i = 0; i < coords.length; i++) {
     let index = +coords[i][0] * BOARD_SIZE + +coords[i][1];

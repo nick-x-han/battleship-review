@@ -24,6 +24,22 @@ export class GameInfo {
     }
   }
 
+  placeShipsRandom(player) {
+    let shipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+    while (shipLengths.length > 0) {
+      let isVertical = Math.random() < 0.5;
+      let [x, y] = generateRandomCoordinates(shipLengths[0] - 1, isVertical);
+      try {
+        let ship = new Ship(shipLengths[0]);
+        player.board.placeShip(ship, [x, y], isVertical);
+        shipLengths.shift();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    appendCells(player, player.dom);
+  }
+
   placeShips(player) {
     let ship = new Ship(3);
     let ship2 = new Ship(4);
@@ -43,8 +59,8 @@ export class GameInfo {
   }
 
   startGame() {
-    this.placeShips(this.player2);
-    this.placeShips(this.player1);
+    this.placeShipsRandom(this.player2);
+    this.placeShipsRandom(this.player1);
 
     lastMoveDiv.textContent = `Game started. ${this.activePlayer.name}'s turn.`;
 
@@ -111,8 +127,7 @@ export class GameInfo {
     this.switchTurn();
   }
   #cpuMove(enemy) {
-    let x = Math.floor(Math.random() * 10);
-    let y = Math.floor(Math.random() * 10);
+    let [x, y] = generateRandomCoordinates();
     this.#makeMove(enemy, x, y);
   }
 
@@ -137,4 +152,15 @@ export class GameInfo {
       cell.classList.add("ship");
     }
   }
+}
+
+function generateRandomCoordinates(offset = 0, isVertical = true) {
+  let bottomOffset = 0;
+  let rightOffset = 0;
+  if (isVertical) bottomOffset = offset;
+  else rightOffset = offset;
+
+  let x = Math.floor(Math.random() * (10 - bottomOffset));
+  let y = Math.floor(Math.random() * (10 - rightOffset));
+  return [x, y];
 }

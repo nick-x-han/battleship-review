@@ -1,3 +1,4 @@
+import { renderBoard } from "./display.js";
 import { GameInfo } from "./gameInfo.js";
 import { Player } from "./player.js";
 
@@ -81,9 +82,15 @@ function chooseNameView() {
   return outputDiv;
 }
 
+function placeShipsView() {
+  let shipBoard = renderBoard();
+}
+
 function gameDisplay(name1, name2, isCPU1, isCPU2) {
   const player1 = new Player(name1, isCPU1);
   const player2 = new Player(name2, isCPU2);
+  // if (!player1.isCPU) placeShipsView(player1);
+  // if (!player2.isCPU) placeShipsView(player1);
   let game = new GameInfo(player1, player2, 1000);
   game.startGame();
 }
