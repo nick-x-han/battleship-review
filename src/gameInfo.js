@@ -51,6 +51,8 @@ export class GameInfo {
   startTurn(player, enemy) {
     if (!player.isCPU) enemy.dom.classList.add("interactable");
     player.dom.classList.remove('interactable');
+    player.dom.classList.remove('current-board');
+    enemy.dom.classList.add('current-board');
 
     if (player.isCPU) this.#cpuMove(enemy);
     else {

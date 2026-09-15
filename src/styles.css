@@ -29,6 +29,10 @@
   }
 }
 
+.current-board {
+  background-color: rgb(192, 161, 161);
+}
+
 .ship {
   background-color: black;
 }
