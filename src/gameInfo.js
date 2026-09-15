@@ -84,6 +84,9 @@ export class GameInfo {
         this.endGame();
         return;
       }
+      // a successful hit begets another turn
+      this.startTurn(this.activePlayer, enemy);
+      return;
     }
     this.switchTurn();
   }
