@@ -54,11 +54,15 @@ export class GameInfo {
   }
 
   startTurn(player, enemy) {
+    // contentDiv.insertBefore(player.dom, enemy.dom);
+
     if (!player.isCPU) enemy.dom.classList.add("interactable");
     player.dom.classList.remove("interactable");
     player.dom.classList.remove("enemy");
     enemy.dom.classList.add("enemy");
+    //prevents CPU from showing its ships
     if (!player.isCPU) player.dom.classList.add("player");
+    //against CPU, human's ships will continue displaying
     if (!player.isCPU) enemy.dom.classList.remove("player");
 
     if (player.isCPU) this.#cpuMove(enemy);

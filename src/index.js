@@ -14,8 +14,7 @@ initializeViews();
   //live updating: onchange (so whenever a coordinate input is updated)
 
 
-//rerender each board after each switchPlayer so that active player always on left?
-  //WHAT IF don't do reremders at all; each cell updates itself with classes?
+//switch sides so active player always on left
 
 //no adjacent ships?
   //separate validateBoard in gameboard?
