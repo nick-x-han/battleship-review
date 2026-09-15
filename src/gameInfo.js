@@ -58,8 +58,8 @@ export class GameInfo {
     player.dom.classList.remove("interactable");
     player.dom.classList.remove("enemy");
     enemy.dom.classList.add("enemy");
-    player.dom.classList.add("player");
-    enemy.dom.classList.remove("player");
+    if (!player.isCPU) player.dom.classList.add("player");
+    if (!player.isCPU) enemy.dom.classList.remove("player");
 
     if (player.isCPU) this.#cpuMove(enemy);
     else {
