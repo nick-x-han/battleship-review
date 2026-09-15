@@ -52,7 +52,7 @@ export class GameInfo {
   }
 
   #makeMove(enemy, x, y) {
-    let potentialShip = enemy.board[x][y];
+    // let potentialShip = enemy.board.board[x][y];
     let outcome = enemy.board.receiveAttack([x, y]);
     if (outcome === "repeat") {
       this.startTurn(this.activePlayer, enemy);
@@ -62,7 +62,11 @@ export class GameInfo {
     appendAndReplaceCells(enemy, enemy.dom);
 
     if (outcome === "hit") {
-      
+      if (enemy.board.isDefeated()) {
+        lastMoveDiv.textContent = `${this.activePlayer.name} just won!`;
+        this.endGame();
+        return;
+      }
     }
     this.switchTurn();
   }
@@ -77,5 +81,10 @@ export class GameInfo {
     let x = e.target.dataset.row;
     let y = e.target.dataset.column;
     this.#makeMove(enemy, x, y);
+  }
+
+  endGame() {
+    this.player1.dom.onclick = null;
+    this.player2.dom.onclick = null;
   }
 }
