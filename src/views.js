@@ -37,6 +37,16 @@ function createNewButton(text, onClick) {
   return nextViewButton;
 }
 
+function appendToHeader(text) {
+  let headerItem = document.createElement("div");
+  headerItem.textContent = text;
+  headerDiv.append(headerItem);
+}
+
+function resetHeader() {
+  headerDiv.replaceChildren();
+}
+
 function nameSelectView(isDefaultHuman = true) {
   let select = document.createElement("select");
   let cpuOption = document.createElement("option");
@@ -60,24 +70,8 @@ function nameInputView(defaultName = "Player") {
   return playerInput;
 }
 
-function appendToHeader(text, ) {
-  
-}
-
-function resetHeader() {
-  headerDiv.replaceChildren();
-}
-
 function onConfirmNames(name1, name2, selected1, selected2) {
-  headerDiv.replaceChildren();
-  let namesDiv = document.createElement("div");
-  let player1Name = document.createElement("div");
-  let player2Name = document.createElement("div");
-  player1Name.textContent = `${name1}'s board`;
-  player2Name.textContent = `${name2}'s board`;
-  namesDiv.append(player1Name, player2Name);
-  namesDiv.classList.add("two-items-horizontal");
-  headerDiv.append(namesDiv);
+  resetHeader();
 
   let isCPU1 = selected1 === "CPU" ? true : false;
   let isCPU2 = selected2 === "CPU" ? true : false;
@@ -85,11 +79,12 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   const player1 = new Player(name1, isCPU1);
   const player2 = new Player(name2, isCPU2);
   game = new GameController(player1, player2, 500);
-  queueView();
+  queueView(gameView());
 
-  if (!player1.isCPU) queueView(placeShipsView(player1));
-  if (!player2.isCPU) queueView(placeShipsView(player2));
-  // gameDisplay(name1, name2, isCPU1, isCPU2);
+  // if (!player1.isCPU) queueView(placeShipsView(player1));
+  // if (!player2.isCPU) queueView(placeShipsView(player2));
+  gameDisplay(name1, name2, isCPU1, isCPU2);
+  
 }
 
 function chooseNameView() {
@@ -131,16 +126,18 @@ function placeShipsView(player) {
   return shipBoard;
 }
 
-// function gameDisplay(name1, name2, isCPU1, isCPU2) {
-//   const player1 = new Player(name1, isCPU1);
-//   const player2 = new Player(name2, isCPU2);
-//   // if (!player1.isCPU) placeShipsView(player1);
-//   // if (!player2.isCPU) placeShipsView(player2);
-//   game = new GameController(player1, player2, 500);
-//   game.startGame();
-// }
+function gameDisplay(name1, name2, isCPU1, isCPU2) {
+  const player1 = new Player(name1, isCPU1);
+  const player2 = new Player(name2, isCPU2);
+  // if (!player1.isCPU) placeShipsView(player1);
+  // if (!player2.isCPU) placeShipsView(player2);
+  game = new GameController(player1, player2, 500);
+  game.startGame();
+}
 
 function gameView() {
   let player1 = game.player1;
   let player2 = game.player2;
+  appendToHeader(`${player1.name}'s board`);
+  appendToHeader(`${player2.name}'s board`);
 }
