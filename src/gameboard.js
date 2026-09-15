@@ -15,8 +15,12 @@ class Gameboard {
     }
   }
 
-  static getShipCoordinates(ship) {
-    return ship.coords;
+  getShipCoordinates() {
+    let coords = []
+    for (let ship of this.#ships) {
+      coords.push(ship.coords);
+    }
+    return coords;
   }
 
   #validateFleetCount(length) {

@@ -56,7 +56,22 @@
 
 .player {
   & .ship {
+  }
 
+  & .top-edge {
+    border-top: none;
+  }
+
+  & .bottom-edge {
+    border-bottom: none;
+  }
+
+  & .left-edge {
+    border-left: none;
+  }
+
+  & .right-edge {
+    border-right: none;
   }
 }
 

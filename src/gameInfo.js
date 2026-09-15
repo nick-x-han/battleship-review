@@ -90,7 +90,6 @@ export class GameInfo {
         this.endGame();
         return;
       }
-      this.displayDestroyedShip()
       // a successful hit begets another turn
       this.startTurn(this.activePlayer, enemy);
       return;
@@ -122,9 +121,5 @@ export class GameInfo {
     else if (value !== 0) {
       cell.classList.add("ship");
     }
-  }
-
-  displayDestroyedShip(ship) {
-
   }
 }
