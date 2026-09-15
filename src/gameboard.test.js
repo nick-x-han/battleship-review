@@ -110,8 +110,8 @@ test("after a successful attack, reattacking will not change the coord value fro
   let gameboard = new Gameboard();
   let ship = new Ship(2);
   gameboard.placeShip(ship, [3, 3], true);
-  expect(gameboard.receiveAttack([3, 3])).toBe("hit");
-  expect(gameboard.receiveAttack([3, 3])).toBe("repeat");
+  expect(gameboard.receiveAttack([3, 3])).toEqual({ result: "hit", ship });
+  expect(gameboard.receiveAttack([3, 3])).toEqual({ result: "repeat" });
   expect(gameboard.board[3][3]).toBe(1);
 })
 

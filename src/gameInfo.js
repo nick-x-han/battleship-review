@@ -72,8 +72,8 @@ export class GameInfo {
   }
 
   async #makeMove(enemy, x, y) {
-    let outcome = enemy.board.receiveAttack([x, y]);
-    if (outcome === "repeat") {
+    let attack = enemy.board.receiveAttack([x, y]);
+    if (attack.result === "repeat") {
       this.startTurn(this.activePlayer, enemy);
       return;
     } else {
@@ -84,7 +84,7 @@ export class GameInfo {
 
     this.updateCell(enemy, x, y);
 
-    if (outcome === "hit") {
+    if (attack.result === "hit") {
       if (enemy.board.isDefeated()) {
         lastMoveDiv.textContent = `${this.activePlayer.name} just won!`;
         this.endGame();
@@ -109,16 +109,26 @@ export class GameInfo {
   }
 
   updateCell(player, x, y) {
-    let index = +x * BOARD_SIZE + +y;
+    x = Number(x);
+    y = Number(y);
+    let index = x * BOARD_SIZE + y;
     let cell = player.dom.children[index];
     let value = player.board.board[x][y];
-    //inside here use gameboard func to get all tiles of a ship if sunk and display fully?
+
     if (value === -1) {
       cell.classList.add("missed");
     } else if (value === 1) {
       cell.classList.add("hit");
-    } 
-    else if (value !== 0) {
+      let ships = player.board.getShips();
+      for (let ship of ships) {
+        let coords = player.board.getShipCoordinates(ship);
+        if (coords.some(([a, b]) => a === x && b === y)) {
+          if (true) {
+            
+          }
+        };
+      }
+    } else if (value !== 0) {
       cell.classList.add("ship");
     }
   }

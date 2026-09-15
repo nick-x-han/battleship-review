@@ -32,8 +32,13 @@ export function appendCells(player, parent) {
 }
 
 function adjustShipBorders(board, cellsParent) {
-  let coords = board.getShipCoordinates();
-  console.log(coords);
+
+  let coords = [];
+  let ships = board.getShips();
+  for (let ship of ships) {
+    coords.push(board.getShipCoordinates(ship));
+  }
+
   for (let shipCoords of coords) {
     editBorders(shipCoords, cellsParent);
   }

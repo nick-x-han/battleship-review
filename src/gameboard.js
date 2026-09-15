@@ -15,12 +15,13 @@ class Gameboard {
     }
   }
 
-  getShipCoordinates() {
-    let coords = []
-    for (let ship of this.#ships) {
-      coords.push(ship.coords);
-    }
-    return coords;
+  getShipCoordinates(ship) {
+    if (this.#ships.includes(ship)) return ship.coords;
+    throw new Error("This ship doesn't belong to this gameboard");
+  }
+
+  getShips() {
+    return this.#ships;
   }
 
   #validateFleetCount(length) {
@@ -106,7 +107,7 @@ class Gameboard {
     let [x, y] = coordinates;
     if (this.#board[x][y] === 0) {
       this.#board[x][y] = -1;
-      return "miss";
+      return { result: "miss" };
     }
     if (this.#board[x][y] instanceof Object) {
       const ship = this.#board[x][y];
@@ -116,11 +117,11 @@ class Gameboard {
         this.sunkShips++;
       }
 
-      return "hit";
+      return { result: "hit", ship };
     }
+    
     //if this coord was already attacked
-    console.log("Already missed or succeeded here before");
-    return "repeat";
+    return { result: "repeat" };
   }
 
   isDefeated() {
