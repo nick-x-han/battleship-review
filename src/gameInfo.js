@@ -42,8 +42,8 @@ export class GameInfo {
     if (player.isCPU) this.#cpuMove(enemy);
     else {
       enemy.dom.onclick = (e) => this.#onClickEnemyBoard(e, enemy);
+      player.dom.onclick = null;
     }
-    player.dom.onclick = null;
   }
   switchTurn() {
     let enemy = this.activePlayer;
