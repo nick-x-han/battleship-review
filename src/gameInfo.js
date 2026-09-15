@@ -40,6 +40,8 @@ export class GameInfo {
     this.placeShips(this.player2);
     this.placeShips(this.player1);
 
+    lastMoveDiv.textContent = `Game started. ${this.activePlayer.name}'s turn.`;
+
     contentDiv.append(this.player1.dom, this.player2.dom);
 
     this.startTurn(this.player1, this.player2);

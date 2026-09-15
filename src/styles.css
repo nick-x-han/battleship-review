@@ -15,17 +15,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .interactable .cell {
   &:hover {
-      background-color: rgb(244, 235, 235);
-    }
+    background-color: rgb(244, 235, 235);
+  }
 
-    &:active {
-      background-color: rgb(209, 203, 203);
-    }
+  &:active {
+    background-color: rgb(209, 203, 203);
+  }
 }
 
 .ship {
@@ -42,4 +41,22 @@
   display: flex;
   justify-content: space-evenly;
   padding: 2em;
+}
+
+#header {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  & #names {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+
+    & div {
+      color: red;
+      font-size: 2rem;
+    }
+  }
 }

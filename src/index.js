@@ -1,9 +1,5 @@
-import { GameInfo } from "./gameInfo.js";
-import { Player } from "./player.js";
+import { chooseNameView } from "./views.js";
 
-const player1 = new Player("Human", false);
-const player2 = new Player("CPU", true);
-let game = new GameInfo(player1, player2);
-game.startGame();
+chooseNameView();
 
 //ship placing is its own class? 
