@@ -3,6 +3,7 @@ import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
 const lastMoveDiv = document.querySelector("#lastMove");
+const BOARD_SIZE = 10;
 
 export class GameInfo {
   constructor(player1, player2, cpuMoveDelay=0) {
@@ -25,7 +26,9 @@ export class GameInfo {
 
   placeShips(player) {
     let ship = new Ship(3);
+    let ship2 = new Ship(4);
     player.board.placeShip(ship, [0, 0]);
+    player.board.placeShip(ship2, [4, 0], true);
 
     appendAndReplaceCells(player, player.dom);
   }
@@ -77,6 +80,7 @@ export class GameInfo {
     }
     lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
     appendAndReplaceCells(enemy, enemy.dom);
+    // this.updateCell(enemy, x, y);
 
     if (outcome === "hit") {
       if (enemy.board.isDefeated()) {
@@ -100,6 +104,12 @@ export class GameInfo {
     let x = e.target.dataset.row;
     let y = e.target.dataset.column;
     this.#makeMove(enemy, x, y);
+  }
+
+  updateCell(player, x, y) {
+    let index = +x * BOARD_SIZE + +y;
+    player.dom.children[index].classList.add("hit");
+    // contentDiv.c
   }
 
 }

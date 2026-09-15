@@ -20,9 +20,10 @@ initializeViews();
 
 //OR USE classes + children (like enemy > ship) and toggle in startTurn
 
-//hit => extra turn
-
 //need to track each ship's actual positions
 
 //rerender each board after each switchPlayer so that active player always on left?
   //WHAT IF don't do reremders at all; each cell updates itself with classes?
+
+//no adjacent ships?
+  //separate validateBoard in gameboard?
