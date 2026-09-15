@@ -26,6 +26,10 @@ class Player {
       }
     }
   }
+
+  resetShips() {
+    this.board = new Gameboard();
+  }
 }
 
 export { Player };
