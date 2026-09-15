@@ -124,6 +124,18 @@ test("attacking one part of a ship won't affect the others", () => {
   expect(gameboard.board[1][0]).toBe(ship);
 })
 
+test("when ships are all sunk, defeated state", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(1);
+  let ship2 = new Ship(1);
+  gameboard.placeShip(ship, [0, 0]);
+  gameboard.placeShip(ship2, [3, 0]);
+  gameboard.receiveAttack([0, 0]);
+  expect(gameboard.isDefeated()).toBe(false);
+  gameboard.receiveAttack([3, 0]);
+  expect(gameboard.isDefeated()).toBe(true);
+})
+
 //idea: cell class to track attacked or not
 
 // make receive attack return the square's value prior to attack

@@ -52,6 +52,7 @@ export class GameInfo {
   }
 
   #makeMove(enemy, x, y) {
+    let potentialShip = enemy.board[x][y];
     let outcome = enemy.board.receiveAttack([x, y]);
     if (outcome === "repeat") {
       this.startTurn(this.activePlayer, enemy);
@@ -59,6 +60,10 @@ export class GameInfo {
     }
     lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
     appendAndReplaceCells(enemy, enemy.dom);
+
+    if (outcome === "hit") {
+      
+    }
     this.switchTurn();
   }
   #cpuMove(enemy) {

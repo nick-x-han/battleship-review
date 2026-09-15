@@ -9,6 +9,7 @@ class Gameboard {
     this.#board = [];
     this.#ships = [];
     this.#fleetCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    this.sunkShips = 0;
     for (let i = 0; i < BOARD_SIZE; i++) {
       this.#board.push(new Array(BOARD_SIZE).fill(0, 0, BOARD_SIZE));
     }
@@ -88,13 +89,22 @@ class Gameboard {
       return "miss";
     }
     if (this.#board[x][y] instanceof Object) {
-      this.#board[x][y].hit();
+      const ship = this.#board[x][y];
+      ship.hit();
       this.#board[x][y] = 1;
+      if (ship.isSunk()) {
+        this.sunkShips++;
+      }
+
       return "hit";
     }
     //if this coord was already attacked
     console.log("Already missed or succeeded here before");
     return "repeat";
+  }
+
+  isDefeated() {
+    return this.sunkShips === this.#ships.length;
   }
 
   get board() {
