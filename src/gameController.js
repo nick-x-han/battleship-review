@@ -1,5 +1,4 @@
 import {
-  appendCells,
   editMessage,
   renderBoard,
   stopInteractivity,
@@ -7,7 +6,6 @@ import {
   updateCell,
 } from "./display.js";
 import { generateRandomCoordinates } from "./gameboard.js";
-import { Ship } from "./ship.js";
 
 const BOARD_SIZE = 10;
 
@@ -30,33 +28,23 @@ export class GameController {
     }
   }
 
-  placeShips(player) {
-    let ship = new Ship(3);
-    let ship2 = new Ship(4);
-    let ship3 = new Ship(1);
-    player.board.placeShip(ship, [0, 0]);
-    player.board.placeShip(ship2, [4, 0], true);
-    player.board.placeShip(ship3, [9, 0], true);
-
-    appendCells(player, player.dom);
-  }
 
   endGame() {
     stopInteractivity(this.player1.dom);
     stopInteractivity(this.player2.dom);
   }
 
-  startGame(boardParent) {
-    if (this.player1.board.getShips() < BOARD_SIZE)
-      this.player1.placeShipsRandom();
-    if (this.player2.board.getShips() < BOARD_SIZE)
-      this.player2.placeShipsRandom();
+  startGame() {
+    // if (this.player1.board.getShips() < BOARD_SIZE)
+    //   this.player1.placeShipsRandom();
+    // if (this.player2.board.getShips() < BOARD_SIZE)
+    //   this.player2.placeShipsRandom();
 
-    appendCells(this.player1, this.player1.dom);
-    appendCells(this.player2, this.player2.dom);
+    // appendCells(this.player1, this.player1.dom);
+    // appendCells(this.player2, this.player2.dom);
     editMessage(`Game started. ${this.activePlayer.name}'s turn.`);
 
-    boardParent.append(this.player1.dom, this.player2.dom);
+    // boardParent.append(this.player1.dom, this.player2.dom);
 
     this.startTurn(this.player1, this.player2);
   }

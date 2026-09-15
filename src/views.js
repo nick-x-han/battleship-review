@@ -134,7 +134,7 @@ function placeShipsView(player) {
     player.resetShips();
     player.placeShipsRandom();
     appendCells(player, shipBoard);
-  }
+  };
   randomizeButton.textContent = "Randomize Placements";
 
   let confirmButton = createViewButton("Confirm Placements", () => {});
@@ -155,8 +155,23 @@ function gameView() {
   let player2 = game.player2;
   let playerName1 = createTextDiv(`${player1.name}'s board`);
   let playerName2 = createTextDiv(`${player2.name}'s board`);
+  headerDiv.append(playerName1, playerName2);
+
   contentDiv.classList.add("two-items-horizontal");
   contentDiv.classList.remove("two-items-vertical");
+
+  let containerDiv = document.createElement("div");
+
+  if (player1.board.getShips() < BOARD_SIZE)
+    player1.placeShipsRandom();
+  if (player2.board.getShips() < BOARD_SIZE)
+    player2.placeShipsRandom();
+
+  appendCells(player1, player1.dom);
+  appendCells(player2, player2.dom);
+
+  containerDiv.append(player1.dom, player2.dom);
+  containerDiv.classList.add("two-items-horizontal");
   game.startGame(contentDiv);
-  return playerName1;
+  return containerDiv;
 }
