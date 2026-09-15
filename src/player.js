@@ -7,7 +7,7 @@ class Player {
   }
 
   attack(player, coordinates) {
-    player.board.receiveAttack(coordinates);
+    return player.board.receiveAttack(coordinates);
   }
 }
 

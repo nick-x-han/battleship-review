@@ -85,16 +85,16 @@ class Gameboard {
     let [x, y] = coordinates;
     if (this.#board[x][y] === 0) {
       this.#board[x][y] = -1;
-      return false;
+      return "miss";
     }
     if (this.#board[x][y] instanceof Object) {
       this.#board[x][y].hit();
       this.#board[x][y] = 1;
-      return true;
+      return "hit";
     }
     //if this coord was already attacked
     console.log("Already missed or succeeded here before");
-    return false;
+    return "repeat";
   }
 
   get board() {
