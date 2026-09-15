@@ -13,6 +13,7 @@ class Player {
   }
 
   placeShipsRandom() {
+    this.resetShips();
     let shipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
     while (shipLengths.length > 0) {
       let isVertical = Math.random() < 0.5;

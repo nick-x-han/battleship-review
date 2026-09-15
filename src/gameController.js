@@ -47,8 +47,10 @@ export class GameController {
   }
 
   startGame(boardParent) {
-    this.player1.placeShipsRandom();
-    this.player2.placeShipsRandom();
+    if (this.player1.board.getShips() < BOARD_SIZE)
+      this.player1.placeShipsRandom();
+    if (this.player2.board.getShips() < BOARD_SIZE)
+      this.player2.placeShipsRandom();
 
     appendCells(this.player1, this.player1.dom);
     appendCells(this.player2, this.player2.dom);

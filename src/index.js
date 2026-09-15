@@ -22,6 +22,8 @@ initializeViews(500);
 
 //each view has its own header and content so that the single view 
 //returned actually amkes sense (+ don't need resetAll anymore)
+  //BETTER: header is just "Battleship", content is what is modified
+  //by views
 
 //make the gameDisplay a view itself
 

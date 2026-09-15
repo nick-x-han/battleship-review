@@ -83,8 +83,8 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   const player2 = new Player(name2, isCPU2);
   game = new GameController(player1, player2, cpuDelay);
 
-  // if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
-  // if (!player2.isCPU) queueView(() => placeShipsView(player2), contentDiv);
+  if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
+  if (!player2.isCPU) queueView(() => placeShipsView(player2), contentDiv);
 
   queueView(() => gameView(), contentDiv);
 }
@@ -131,10 +131,21 @@ function placeShipsView(player) {
   shipBoard.classList.add("player");
   let randomizeButton = document.createElement("button");
   randomizeButton.onclick = () => {
-    
+    player.resetShips();
+    player.placeShipsRandom();
+    appendCells(player, shipBoard);
   }
+  randomizeButton.textContent = "Randomize Placements";
+
+  let confirmButton = createViewButton("Confirm Placements", () => {});
+
   let descriptionText = createTextDiv(`${player.name}: Place Ships`);
+
   headerDiv.append(descriptionText);
+  headerDiv.append(randomizeButton);
+  headerDiv.append(confirmButton);
+  contentDiv.classList.remove("two-items-horizontal");
+  contentDiv.classList.add("two-items-vertical");
 
   return shipBoard;
 }
@@ -144,6 +155,8 @@ function gameView() {
   let player2 = game.player2;
   let playerName1 = createTextDiv(`${player1.name}'s board`);
   let playerName2 = createTextDiv(`${player2.name}'s board`);
+  contentDiv.classList.add("two-items-horizontal");
+  contentDiv.classList.remove("two-items-vertical");
   game.startGame(contentDiv);
   return playerName1;
 }
