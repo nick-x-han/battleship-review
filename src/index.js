@@ -23,3 +23,7 @@ initializeViews();
 //append cells after ships are placed (maybe?)
   //this should work with creting a gameboard just for placing ships or whatever
   //since appendCells only displays ships now 
+
+//DISPLAY.js has function to just modify lastMoveDiv with input text
+
+//fix bug with clicking during oppoennt turn

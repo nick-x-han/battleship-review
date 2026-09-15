@@ -1,11 +1,18 @@
-import { appendCells, renderBoard } from "./display.js";
+import {
+  appendCells,
+  renderBoard,
+  stopInteractivity,
+  toggleClasses,
+  updateCell,
+} from "./display.js";
+import { generateRandomCoordinates } from "./gameboard.js";
 import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
 const lastMoveDiv = document.querySelector("#lastMove");
 const BOARD_SIZE = 10;
 
-export class GameInfo {
+export class GameController {
   constructor(player1, player2, cpuMoveDelay = 0) {
     this.cpuMoveDelay = cpuMoveDelay;
     this.player1 = player1;
@@ -24,22 +31,6 @@ export class GameInfo {
     }
   }
 
-  placeShipsRandom(player) {
-    let shipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-    while (shipLengths.length > 0) {
-      let isVertical = Math.random() < 0.5;
-      let [x, y] = generateRandomCoordinates(shipLengths[0] - 1, isVertical);
-      try {
-        let ship = new Ship(shipLengths[0]);
-        player.board.placeShip(ship, [x, y], isVertical);
-        shipLengths.shift();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    appendCells(player, player.dom);
-  }
-
   placeShips(player) {
     let ship = new Ship(3);
     let ship2 = new Ship(4);
@@ -52,17 +43,16 @@ export class GameInfo {
   }
 
   endGame() {
-    this.player1.dom.onclick = null;
-    this.player2.dom.onclick = null;
-    this.player1.dom.classList.remove("interactable");
-    this.player2.dom.classList.remove("interactable");
+    stopInteractivity(this.player1.dom);
+    stopInteractivity(this.player2.dom);
   }
 
   startGame() {
-    this.placeShipsRandom(this.player1);
-    this.placeShipsRandom(this.player2);
-    
+    this.player1.placeShipsRandom();
+    this.player2.placeShipsRandom();
 
+    appendCells(this.player1, this.player1.dom);
+    appendCells(this.player2, this.player2.dom);
     lastMoveDiv.textContent = `Game started. ${this.activePlayer.name}'s turn.`;
 
     contentDiv.append(this.player1.dom, this.player2.dom);
@@ -70,21 +60,9 @@ export class GameInfo {
     this.startTurn(this.player1, this.player2);
   }
 
-  #toggleClasses(player, enemy) {
-    if (!player.isCPU) enemy.dom.classList.add("interactable");
-    player.dom.classList.remove("interactable");
-    player.dom.classList.remove("enemy");
-    enemy.dom.classList.add("enemy");
-    //prevents CPU from showing its ships
-    if (!player.isCPU) player.dom.classList.add("player");
-    //against CPU, human's ships will continue displaying
-    if (!player.isCPU) enemy.dom.classList.remove("player");
-  }
-
   startTurn(player, enemy) {
     // contentDiv.insertBefore(player.dom, enemy.dom);
-    this.#toggleClasses(player, enemy);
-    
+    toggleClasses(player, enemy);
 
     if (player.isCPU) this.#cpuMove(enemy);
     else {
@@ -99,6 +77,8 @@ export class GameInfo {
   }
 
   async #makeMove(enemy, x, y) {
+    x = Number(x);
+    y = Number(y);
     let attack = enemy.board.receiveAttack([x, y]);
     if (attack.result === "repeat") {
       this.startTurn(this.activePlayer, enemy);
@@ -109,7 +89,10 @@ export class GameInfo {
     }
     lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
 
-    this.updateCell(enemy, x, y);
+    let index = x * BOARD_SIZE + y;
+    let cell = enemy.dom.children[index];
+    let value = enemy.board.board[x][y];
+    updateCell(cell, value);
 
     if (attack.result === "hit") {
       if (attack.ship.isSunk()) {
@@ -141,31 +124,4 @@ export class GameInfo {
     let y = e.target.dataset.column;
     this.#makeMove(enemy, x, y);
   }
-
-  updateCell(player, x, y) {
-    x = Number(x);
-    y = Number(y);
-    let index = x * BOARD_SIZE + y;
-    let cell = player.dom.children[index];
-    let value = player.board.board[x][y];
-
-    if (value === -1) {
-      cell.classList.add("missed");
-    } else if (value === 1) {
-      cell.classList.add("hit");
-    } else if (value !== 0) {
-      cell.classList.add("ship");
-    }
-  }
-}
-
-function generateRandomCoordinates(offset = 0, isVertical = true) {
-  let bottomOffset = 0;
-  let rightOffset = 0;
-  if (isVertical) bottomOffset = offset;
-  else rightOffset = offset;
-
-  let x = Math.floor(Math.random() * (10 - bottomOffset));
-  let y = Math.floor(Math.random() * (10 - rightOffset));
-  return [x, y];
 }

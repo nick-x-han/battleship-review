@@ -2,6 +2,32 @@ import "./styles.css";
 
 const BOARD_SIZE = 10;
 
+export function stopInteractivity(domObject) {
+  domObject.onclick = null;
+  domObject.classList.remove("interactable");
+}
+
+export function toggleClasses(player, enemy) {
+  if (!player.isCPU) enemy.dom.classList.add("interactable");
+  player.dom.classList.remove("interactable");
+  player.dom.classList.remove("enemy");
+  enemy.dom.classList.add("enemy");
+  //prevents CPU from showing its ships
+  if (!player.isCPU) player.dom.classList.add("player");
+  //against CPU, human's ships will continue displaying
+  if (!player.isCPU) enemy.dom.classList.remove("player");
+}
+
+export function updateCell(cell, value) {
+  if (value === -1) {
+    cell.classList.add("missed");
+  } else if (value === 1) {
+    cell.classList.add("hit");
+  } else if (value !== 0) {
+    cell.classList.add("ship");
+  }
+}
+
 export function renderBoard(player) {
   let boardDiv = document.createElement("div");
 
@@ -32,7 +58,6 @@ export function appendCells(player, parent) {
 }
 
 function adjustShipBorders(board, cellsParent) {
-
   let coords = [];
   let ships = board.getShips();
   for (let ship of ships) {
@@ -61,11 +86,3 @@ function editBorders(coords, cellsParent) {
     }
   }
 }
-
-//placement UI will be each of the 10 ships
-//having a form, and each its own confirm
-//button to make checking overlaps easier
-//OR just show only human board
-
-//random placements function; used for both cpu and also
-//is an option for player if needed

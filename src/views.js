@@ -1,5 +1,5 @@
 import { appendCells, renderBoard } from "./display.js";
-import { GameInfo } from "./gameInfo.js";
+import { GameController } from "./gameInfo.js";
 import { Player } from "./player.js";
 import { BOARD_SIZE, FLEET_SIZE } from "./gameboard.js";
 
@@ -84,66 +84,19 @@ function chooseNameView() {
   return outputDiv;
 }
 
-function shipView(length) {
-  let xInput = document.createElement("input");
-  let xLabel = document.createElement("label");
-  xLabel.htmlFor = "x";
-  xLabel.value = "X:";
-  xInput.id = "x";
-  xInput.type = "number";
-  xInput.min = 0;
-  xInput.max = BOARD_SIZE - 1;
-  let yInput = document.createElement("input");
-  let yLabel = document.createElement("label");
-  yLabel.htmlFor = "y";
-  yLabel.value = "Y:";
-  yInput.id = "y";
-  yInput.type = "number";
-  yInput.min = 0;
-  yInput.max = BOARD_SIZE - 1;
-  
-  let inputsDiv = document.createElement("div");
-
-  let visualDiv = document.createElement("div");
-  for (let i = 0; i < length; i++) {
-    let cell = document.createElement("div");
-    cell.classList.add("cell");
-    visualDiv.appendChild(cell);
-  }
-  visualDiv.classList.add("board");
-  inputsDiv.append(xInput, xLabel, yInput, yLabel);
-  inputsDiv.classList.add("two-items-horizontal");
-  let outputDiv = document.createElement("div");
-  outputDiv.append(visualDiv, inputsDiv);
-  outputDiv.classList.add("two-items-vertical");
-  outputDiv.classList.add("place-ship");
-  return outputDiv;
-}
-
-function shipLengthView(length) {
-  let count = FLEET_SIZE[length];
-  let lengthDiv = document.createElement("div");
-  for (let i = 0; i < count; i++) {
-    lengthDiv.append(shipView(length));
-  }
-  return lengthDiv;
-}
-
 function placeShipsView(player) {
+  // player.board.
   let shipBoard = renderBoard(player);
-  shipBoard.draggable = true;
-  appendCells(player, shipBoard);
+  // appendCells(player, shipBoard);
   contentDiv.append(shipBoard);
-  for (let i = 0; i < 4; i++) {
-    shipBoard.append(shipLengthView(i + 1));
-  }
+  
 }
 
 function gameDisplay(name1, name2, isCPU1, isCPU2) {
   const player1 = new Player(name1, isCPU1);
   const player2 = new Player(name2, isCPU2);
-  if (!player1.isCPU) placeShipsView(player1);
-  if (!player2.isCPU) placeShipsView(player2);
-  // let game = new GameInfo(player1, player2, 1000);
-  // game.startGame();
+  // if (!player1.isCPU) placeShipsView(player1);
+  // if (!player2.isCPU) placeShipsView(player2);
+  let game = new GameController(player1, player2, 1000);
+  game.startGame();
 }
