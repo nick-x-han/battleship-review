@@ -49,7 +49,7 @@ export class GameInfo {
   }
 
   startTurn(player, enemy) {
-    enemy.dom.classList.add("interactable");
+    if (!player.isCPU) enemy.dom.classList.add("interactable");
     player.dom.classList.remove('interactable');
 
     if (player.isCPU) this.#cpuMove(enemy);
@@ -65,7 +65,6 @@ export class GameInfo {
   }
 
   async #makeMove(enemy, x, y) {
-    // let potentialShip = enemy.board.board[x][y];
     let outcome = enemy.board.receiveAttack([x, y]);
     if (outcome === "repeat") {
       this.startTurn(this.activePlayer, enemy);

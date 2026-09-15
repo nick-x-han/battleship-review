@@ -35,8 +35,8 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   let namesDiv = document.createElement("div");
   let player1Name = document.createElement("div");
   let player2Name = document.createElement("div");
-  player1Name.textContent = name1;
-  player2Name.textContent = name2;
+  player1Name.textContent = `${name1}'s board`;
+  player2Name.textContent = `${name2}'s board`;
   namesDiv.append(player1Name, player2Name);
   namesDiv.classList.add("two-items-horizontal");
   headerDiv.append(namesDiv);

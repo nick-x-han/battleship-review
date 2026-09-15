@@ -17,13 +17,15 @@
   align-items: center;
 }
 
-.interactable .cell {
-  &:hover {
-    background-color: rgb(244, 235, 235);
-  }
+.interactable {
+  & .cell {
+    &:hover {
+      background-color: rgb(244, 235, 235);
+    }
 
-  &:active {
-    background-color: rgb(209, 203, 203);
+    &:active {
+      background-color: rgb(209, 203, 203);
+    }
   }
 }
 
@@ -45,7 +47,6 @@
 
 #header {
   & #names {
-    
     & div {
       color: red;
       font-size: 2rem;
