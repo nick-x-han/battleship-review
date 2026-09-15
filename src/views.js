@@ -83,8 +83,8 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   const player2 = new Player(name2, isCPU2);
   game = new GameController(player1, player2, cpuDelay);
 
-  if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
-  if (!player2.isCPU) queueView(() => placeShipsView(player2), contentDiv);
+  // if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
+  // if (!player2.isCPU) queueView(() => placeShipsView(player2), contentDiv);
 
   queueView(() => gameView(), contentDiv);
 }
@@ -126,9 +126,14 @@ function chooseNameView() {
 }
 
 function placeShipsView(player) {
-  // player.board.
+  player.placeShipsRandom();
   let shipBoard = renderBoard(player);
-  let descriptionText = createTextDiv(`${player.name} to Place Ships`);
+  shipBoard.classList.add("player");
+  let randomizeButton = document.createElement("button");
+  randomizeButton.onclick = () => {
+    
+  }
+  let descriptionText = createTextDiv(`${player.name}: Place Ships`);
   headerDiv.append(descriptionText);
 
   return shipBoard;
@@ -139,5 +144,6 @@ function gameView() {
   let player2 = game.player2;
   let playerName1 = createTextDiv(`${player1.name}'s board`);
   let playerName2 = createTextDiv(`${player2.name}'s board`);
+  game.startGame(contentDiv);
   return playerName1;
 }

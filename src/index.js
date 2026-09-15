@@ -20,6 +20,10 @@ initializeViews(500);
     //maybe create a new dom object with the cells that is position: relative
     //and z index lower so that it can be dragged propelry?
 
-//for views, make an array and a generic function that will add it to content?
+//each view has its own header and content so that the single view 
+//returned actually amkes sense (+ don't need resetAll anymore)
 
 //make the gameDisplay a view itself
+
+//RIGHT NOW, gamecontroller startGame uses contentDiv. easily
+//fixable with passing in a parent or just making it a view

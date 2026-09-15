@@ -9,7 +9,6 @@ import {
 import { generateRandomCoordinates } from "./gameboard.js";
 import { Ship } from "./ship.js";
 
-const contentDiv = document.querySelector("#content");
 const BOARD_SIZE = 10;
 
 export class GameController {
@@ -47,7 +46,7 @@ export class GameController {
     stopInteractivity(this.player2.dom);
   }
 
-  startGame() {
+  startGame(boardParent) {
     this.player1.placeShipsRandom();
     this.player2.placeShipsRandom();
 
@@ -55,7 +54,7 @@ export class GameController {
     appendCells(this.player2, this.player2.dom);
     editMessage(`Game started. ${this.activePlayer.name}'s turn.`);
 
-    contentDiv.append(this.player1.dom, this.player2.dom);
+    boardParent.append(this.player1.dom, this.player2.dom);
 
     this.startTurn(this.player1, this.player2);
   }

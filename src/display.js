@@ -1,6 +1,6 @@
 import "./styles.css";
+import { BOARD_SIZE } from "./gameboard.js";
 
-const BOARD_SIZE = 10;
 const lastMoveDiv = document.querySelector("#lastMove");
 
 export function editMessage(message) {
