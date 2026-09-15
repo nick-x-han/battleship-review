@@ -5,46 +5,49 @@ import { BOARD_SIZE, FLEET_SIZE } from "./gameboard.js";
 
 let headerDiv = document.querySelector("#header");
 let contentDiv = document.querySelector("#content");
-let buttonDiv = document.querySelector("#button-container");
-let viewsArray = [];
+let viewsQueue = [];
 let game;
+let cpuDelay = 0;
 
 // let confirmButton = document.querySelector("#");
 //onclick: move to next view in list
 //views return a small object for a result?
 
-export function initializeViews() {
-  queueView(chooseNameView());
+export function initializeViews(delay) {
+  cpuDelay = delay;
+  queueView(() => chooseNameView());
   displayNextView();
 }
 
 function queueView(view) {
-  viewsArray.push(view);
+  viewsQueue.push(view);
 }
 
-function displayNextView() {
-  if (viewsArray.length === 0) return;
-  buttonDiv.replaceChildren();
-  let currentView = viewsArray.shift();
-  headerDiv.append(currentView);
+function displayNextView(parent = headerDiv) {
+  if (viewsQueue.length === 0) return;
+  resetAll();
+  let currentView = (viewsQueue.shift())();
+  parent.append(currentView);
 }
 
-function createNewButton(text, onClick) {
+function createViewButton(text, onClick, viewParent) {
   let nextViewButton = document.createElement("button");
   nextViewButton.textContent = text;
-  if (onClick) nextViewButton.addEventListener("click", onClick, { once: true });
-  nextViewButton.addEventListener("click", () => displayNextView());
+  if (onClick)
+    nextViewButton.addEventListener("click", onClick, { once: true });
+  nextViewButton.addEventListener("click", () => displayNextView(viewParent));
   return nextViewButton;
 }
 
-function appendToHeader(text) {
-  let headerItem = document.createElement("div");
-  headerItem.textContent = text;
-  headerDiv.append(headerItem);
+function createTextDiv(text) {
+  let textDiv = document.createElement("div");
+  textDiv.textContent = text;
+  return textDiv;
 }
 
-function resetHeader() {
+function resetAll() {
   headerDiv.replaceChildren();
+  contentDiv.replaceChildren();
 }
 
 function nameSelectView(isDefaultHuman = true) {
@@ -71,20 +74,19 @@ function nameInputView(defaultName = "Player") {
 }
 
 function onConfirmNames(name1, name2, selected1, selected2) {
-  resetHeader();
+  resetAll();
 
   let isCPU1 = selected1 === "CPU" ? true : false;
   let isCPU2 = selected2 === "CPU" ? true : false;
 
   const player1 = new Player(name1, isCPU1);
   const player2 = new Player(name2, isCPU2);
-  game = new GameController(player1, player2, 500);
-  queueView(gameView());
+  game = new GameController(player1, player2, cpuDelay);
 
-  // if (!player1.isCPU) queueView(placeShipsView(player1));
-  // if (!player2.isCPU) queueView(placeShipsView(player2));
-  gameDisplay(name1, name2, isCPU1, isCPU2);
-  
+  if (!player1.isCPU) queueView(() => placeShipsView(player1));
+  if (!player2.isCPU) queueView(() => placeShipsView(player2));
+
+  queueView(() => gameView());
 }
 
 function chooseNameView() {
@@ -104,13 +106,17 @@ function chooseNameView() {
 
   playersDiv.append(player1Div, player2Div);
 
-  let confirmButton = createNewButton("Start Game", () =>
-    onConfirmNames(
-      player1Input.value,
-      player2Input.value,
-      player1Select.value,
-      player2Select.value,
-    ));
+  let confirmButton = createViewButton(
+    "Start Game",
+    () =>
+      onConfirmNames(
+        player1Input.value,
+        player2Input.value,
+        player1Select.value,
+        player2Select.value,
+      ),
+    headerDiv,
+  );
 
   let outputDiv = document.createElement("div");
   outputDiv.append(playersDiv, confirmButton);
@@ -122,22 +128,16 @@ function chooseNameView() {
 function placeShipsView(player) {
   // player.board.
   let shipBoard = renderBoard(player);
-  // appendCells(player, shipBoard);
+  let descriptionText = createTextDiv(`${player.name} to Place Ships`);
+  headerDiv.append(descriptionText);
+  
   return shipBoard;
-}
-
-function gameDisplay(name1, name2, isCPU1, isCPU2) {
-  const player1 = new Player(name1, isCPU1);
-  const player2 = new Player(name2, isCPU2);
-  // if (!player1.isCPU) placeShipsView(player1);
-  // if (!player2.isCPU) placeShipsView(player2);
-  game = new GameController(player1, player2, 500);
-  game.startGame();
 }
 
 function gameView() {
   let player1 = game.player1;
   let player2 = game.player2;
-  appendToHeader(`${player1.name}'s board`);
-  appendToHeader(`${player2.name}'s board`);
+  let playerName1 = createTextDiv(`${player1.name}'s board`);
+  let playerName2 = createTextDiv(`${player2.name}'s board`);
+  return playerName1;
 }

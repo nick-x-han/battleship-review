@@ -2,7 +2,7 @@ import { initializeViews } from "./views.js";
 
 // let headerDiv = document.querySelector("#header");
 
-initializeViews();
+initializeViews(500);
 
 //switch sides so active player always on left
 
