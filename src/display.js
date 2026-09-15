@@ -20,11 +20,7 @@ export function appendCells(player, parent) {
     for (let j = 0; j < BOARD_SIZE; j++) {
       let cell = document.createElement("div");
       let value = board[i][j];
-      if (value === -1) {
-        cell.classList.add("missed");
-      } else if (value === 1) {
-        cell.classList.add("hit");
-      } else if (value !== 0) {
+      if (value instanceof Object) {
         cell.classList.add("ship");
       }
 
@@ -37,8 +33,9 @@ export function appendCells(player, parent) {
   }
 }
 
-
-
+function adjustShipBorders() {
+  
+}
 
 
 

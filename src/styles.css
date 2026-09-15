@@ -29,10 +29,6 @@
   }
 }
 
-.current-board {
-  background-color: rgb(192, 161, 161);
-}
-
 .ship {
   border-color: red;
 }
@@ -52,13 +48,14 @@
 }
 
 .enemy {
-  .ship {
-
+  background-color: rgb(192, 161, 161);
+  & .ship {
+    border-color: black;
   }
 }
 
 .player {
-  .ship {
+  & .ship {
 
   }
 }
