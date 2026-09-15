@@ -5,7 +5,8 @@ const contentDiv = document.querySelector("#content");
 const lastMoveDiv = document.querySelector("#lastMove");
 
 export class GameInfo {
-  constructor(player1, player2) {
+  constructor(player1, player2, cpuMoveDelay=0) {
+    this.cpuMoveDelay = cpuMoveDelay;
     this.player1 = player1;
     this.player2 = player2;
     this.activePlayer = this.player1;
@@ -63,12 +64,15 @@ export class GameInfo {
     this.startTurn(this.activePlayer, enemy);
   }
 
-  #makeMove(enemy, x, y) {
+  async #makeMove(enemy, x, y) {
     // let potentialShip = enemy.board.board[x][y];
     let outcome = enemy.board.receiveAttack([x, y]);
     if (outcome === "repeat") {
       this.startTurn(this.activePlayer, enemy);
       return;
+    }
+    else {
+      if (this.activePlayer.isCPU) await new Promise(resolve => setTimeout(resolve, this.cpuMoveDelay));
     }
     lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
     appendAndReplaceCells(enemy, enemy.dom);
@@ -85,7 +89,6 @@ export class GameInfo {
   #cpuMove(enemy) {
     let x = Math.floor(Math.random() * 10);
     let y = Math.floor(Math.random() * 10);
-    
     this.#makeMove(enemy, x, y);
   }
 

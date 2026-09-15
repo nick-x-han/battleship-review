@@ -44,7 +44,7 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   let isCPU1 = selected1 === "CPU" ? true : false;
   let isCPU2 = selected2 === "CPU" ? true : false;
 
-  gameView(name1, name2, isCPU1, isCPU2);
+  gameDisplay(name1, name2, isCPU1, isCPU2);
 }
 
 function chooseNameView() {
@@ -81,10 +81,10 @@ function chooseNameView() {
   return outputDiv;
 }
 
-function gameView(name1, name2, isCPU1, isCPU2) {
+function gameDisplay(name1, name2, isCPU1, isCPU2) {
   const player1 = new Player(name1, isCPU1);
   const player2 = new Player(name2, isCPU2);
-  let game = new GameInfo(player1, player2);
+  let game = new GameInfo(player1, player2, 1000);
   game.startGame();
 }
 //change appendCells method so that on player turn won't show enemy's ships
