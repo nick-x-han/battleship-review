@@ -32,10 +32,6 @@ export function appendAndReplaceCells(player, parent) {
       cell.dataset.row = i;
       cell.dataset.column = j;
 
-      if (player.isCPU) {
-        cell.classList.add("interactable");
-      }
-
       parent.append(cell);
     }
   }

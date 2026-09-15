@@ -29,6 +29,13 @@ export class GameInfo {
     appendAndReplaceCells(player, player.dom);
   }
 
+  endGame() {
+    this.player1.dom.onclick = null;
+    this.player2.dom.onclick = null;
+    this.player1.dom.classList.remove('interactable');
+    this.player2.dom.classList.remove('interactable');
+  }
+
   startGame() {
     this.placeShips(this.player2);
     this.placeShips(this.player1);
@@ -39,6 +46,9 @@ export class GameInfo {
   }
 
   startTurn(player, enemy) {
+    enemy.dom.classList.add("interactable");
+    player.dom.classList.remove('interactable');
+
     if (player.isCPU) this.#cpuMove(enemy);
     else {
       enemy.dom.onclick = (e) => this.#onClickEnemyBoard(e, enemy);
@@ -83,8 +93,4 @@ export class GameInfo {
     this.#makeMove(enemy, x, y);
   }
 
-  endGame() {
-    this.player1.dom.onclick = null;
-    this.player2.dom.onclick = null;
-  }
 }

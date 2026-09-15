@@ -16,15 +16,16 @@
   justify-content: center;
   align-items: center;
 
-  &.interactable {
-    &:hover {
+}
+
+.interactable .cell {
+  &:hover {
       background-color: rgb(244, 235, 235);
     }
 
     &:active {
       background-color: rgb(209, 203, 203);
     }
-  }
 }
 
 .ship {
