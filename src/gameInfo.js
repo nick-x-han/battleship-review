@@ -59,8 +59,9 @@ export class GameInfo {
   }
 
   startGame() {
-    this.placeShipsRandom(this.player2);
     this.placeShipsRandom(this.player1);
+    this.placeShipsRandom(this.player2);
+    
 
     lastMoveDiv.textContent = `Game started. ${this.activePlayer.name}'s turn.`;
 
@@ -69,9 +70,7 @@ export class GameInfo {
     this.startTurn(this.player1, this.player2);
   }
 
-  startTurn(player, enemy) {
-    // contentDiv.insertBefore(player.dom, enemy.dom);
-
+  #toggleClasses(player, enemy) {
     if (!player.isCPU) enemy.dom.classList.add("interactable");
     player.dom.classList.remove("interactable");
     player.dom.classList.remove("enemy");
@@ -80,6 +79,12 @@ export class GameInfo {
     if (!player.isCPU) player.dom.classList.add("player");
     //against CPU, human's ships will continue displaying
     if (!player.isCPU) enemy.dom.classList.remove("player");
+  }
+
+  startTurn(player, enemy) {
+    // contentDiv.insertBefore(player.dom, enemy.dom);
+    this.#toggleClasses(player, enemy);
+    
 
     if (player.isCPU) this.#cpuMove(enemy);
     else {
