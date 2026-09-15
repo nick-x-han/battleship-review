@@ -2,6 +2,7 @@ import { appendAndReplaceCells, renderBoard } from "./display.js";
 import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
+const lastMoveDiv = document.querySelector("#lastMove");
 
 export class GameInfo {
   constructor(player1, player2) {
@@ -51,8 +52,12 @@ export class GameInfo {
   }
 
   #makeMove(enemy, x, y) {
-    enemy.board.receiveAttack([x, y]);
-
+    let outcome = enemy.board.receiveAttack([x, y]);
+    if (outcome === "repeat") {
+      this.startTurn(this.activePlayer, enemy);
+      return;
+    }
+    lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
     appendAndReplaceCells(enemy, enemy.dom);
     this.switchTurn();
   }

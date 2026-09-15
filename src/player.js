@@ -1,7 +1,8 @@
 import { Gameboard } from "./gameboard.js";
 
 class Player {
-  constructor(isCPU) {
+  constructor(name, isCPU) {
+    this.name = name;
     this.board = new Gameboard();
     this.isCPU = isCPU;
   }
