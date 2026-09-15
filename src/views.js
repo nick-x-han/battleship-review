@@ -3,39 +3,87 @@ import { Player } from "./player.js";
 
 let headerDiv = document.querySelector("#header");
 
-export function chooseNameView() {
-  let player1Name = document.createElement("input");
-  let player2Name = document.createElement("input");
-  let confirmButton = document.createElement("button");
-  let namesDiv = document.createElement("div");
-
-  player1Name.value = "Human";
-  player2Name.value = "CPU";
-
-  confirmButton.textContent = "Start Game";
-  confirmButton.onclick = () => {
-    let name1 = player1Name.value;
-    let name2 = player2Name.value;
-    namesDiv.replaceChildren();
-    confirmButton.remove();
-    let player1Display = document.createElement("div");
-    let player2Display = document.createElement("div");
-    player1Display.textContent = name1;
-    player2Display.textContent = name2;
-    namesDiv.append(player1Display, player2Display);
-
-    gameView(name1, name2);
-  }
-
-  namesDiv.id = "names";
-
-  namesDiv.append(player1Name, player2Name);
-  headerDiv.append(namesDiv, confirmButton);
+export function initializeViews() {
+  headerDiv.append(chooseNameView());
 }
 
-export function gameView(name1, name2) {
-  const player1 = new Player(name1, false);
-  const player2 = new Player(name2, true);
+function nameSelectView(isDefaultHuman = true) {
+  let select = document.createElement("select");
+  let cpuOption = document.createElement("option");
+  let humanOption = document.createElement("option");
+  cpuOption.text = "CPU";
+  humanOption.text = "Human";
+  cpuOption.value = "CPU";
+  humanOption.value = "Human";
+
+  select.add(cpuOption);
+  select.add(humanOption);
+
+  select.selectedIndex = isDefaultHuman ? 1 : 0;
+  return select;
+}
+
+function nameInputView(defaultName = "Player") {
+  let playerInput = document.createElement("input");
+  playerInput.value = defaultName;
+
+  return playerInput;
+}
+
+function onConfirmNames(name1, name2, selected1, selected2) {
+  headerDiv.replaceChildren();
+  let namesDiv = document.createElement("div");
+  let player1Name = document.createElement("div");
+  let player2Name = document.createElement("div");
+  player1Name.textContent = name1;
+  player2Name.textContent = name2;
+  namesDiv.append(player1Name, player2Name);
+  namesDiv.classList.add("two-items-horizontal");
+  headerDiv.append(namesDiv);
+
+  let isCPU1 = selected1 === "CPU" ? true : false;
+  let isCPU2 = selected2 === "CPU" ? true : false;
+
+  gameView(name1, name2, isCPU1, isCPU2);
+}
+
+function chooseNameView() {
+  let player1Div = document.createElement("div");
+  let player2Div = document.createElement("div");
+  let playersDiv = document.createElement("div");
+
+  let player1Input = nameInputView("Human");
+  let player2Input = nameInputView("CPU");
+  let player1Select = nameSelectView();
+  let player2Select = nameSelectView(false);
+
+  playersDiv.classList.add("two-items-horizontal");
+
+  player1Div.append(player1Input, player1Select);
+  player2Div.append(player2Input, player2Select);
+
+  playersDiv.append(player1Div, player2Div);
+
+  let confirmButton = document.createElement("button");
+  confirmButton.textContent = "Start Game";
+  confirmButton.onclick = () =>
+    onConfirmNames(
+      player1Input.value,
+      player2Input.value,
+      player1Select.value,
+      player2Select.value,
+    );
+
+  let outputDiv = document.createElement("div");
+  outputDiv.append(playersDiv, confirmButton);
+  outputDiv.classList.add("two-items-vertical");
+
+  return outputDiv;
+}
+
+function gameView(name1, name2, isCPU1, isCPU2) {
+  const player1 = new Player(name1, isCPU1);
+  const player2 = new Player(name2, isCPU2);
   let game = new GameInfo(player1, player2);
   game.startGame();
 }

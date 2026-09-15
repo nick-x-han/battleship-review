@@ -44,19 +44,25 @@
 }
 
 #header {
-  display: flex;
-  flex-direction: column;
-  height: 50px;
-  justify-content: space-between;
-  align-items: center;
   & #names {
-    width: 100vw;
-    display: flex;
-    justify-content: space-around;
-
+    
     & div {
       color: red;
       font-size: 2rem;
     }
   }
+}
+
+.two-items-horizontal {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+}
+
+.two-items-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
 }

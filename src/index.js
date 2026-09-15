@@ -1,5 +1,7 @@
-import { chooseNameView } from "./views.js";
+import { initializeViews } from "./views.js";
 
-chooseNameView();
+let headerDiv = document.querySelector("#header");
+
+initializeViews();
 
 //ship placing is its own class? 
