@@ -49,10 +49,12 @@ function editBorders(coords, cellsParent) {
     let index = +coords[i][0] * BOARD_SIZE + +coords[i][1];
     let cell = cellsParent.children[index];
     if (i !== 0) {
-      cell.style[topLeftEdge] = "none";
+      if (isVertical) cell.classList.add("top-edge");
+      else cell.classList.add("left-edge");
     }
     if (i < coords.length - 1) {
-      cell.style[bottomRightEdge] = "none";
+      if (isVertical) cell.classList.add("bottom-edge");
+      else cell.classList.add("right-edge");
     }
     else {
       // cell.style[bottomRightEdge] = "5px solid red";
@@ -62,8 +64,6 @@ function editBorders(coords, cellsParent) {
   let boardDiv = document.createElement("div");
 
 }
-
-function isVertical() {}
 
 //placement UI will be each of the 10 ships
 //having a form, and each its own confirm

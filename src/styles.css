@@ -34,21 +34,19 @@
 }
 
 .missed {
-  background-color: rgb(116, 108, 108);
   &::after {
     content: "•";
   }
 }
 
 .hit {
-  background-color: aqua;
   &::after {
-    content: "⦿";
+    content: "❌";
   }
 }
 
 .enemy {
-  background-color: rgb(192, 161, 161);
+  background-color: rgb(214, 154, 228);
   & .ship {
     border-color: black;
   }
