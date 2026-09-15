@@ -25,6 +25,9 @@ export function appendAndReplaceCells(player, parent) {
       } else if (value === 1) {
         cell.textContent = "O";
       } else if (value !== 0) {
+        if (player.isCPU) {
+          
+        }
         cell.classList.add("ship");
       }
 

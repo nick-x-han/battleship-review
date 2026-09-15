@@ -43,14 +43,13 @@
   display: flex;
   justify-content: space-evenly;
   padding: 2em;
+  gap: 1em;
 }
 
 #header {
-  & #names {
-    & div {
-      color: red;
-      font-size: 2rem;
-    }
+  & div {
+    color: red;
+    font-size: 2rem;
   }
 }
 
