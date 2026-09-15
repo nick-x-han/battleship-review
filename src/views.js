@@ -1,5 +1,5 @@
 import { appendCells, renderBoard } from "./display.js";
-import { GameController } from "./gameInfo.js";
+import { GameController } from "./gameController.js";
 import { Player } from "./player.js";
 import { BOARD_SIZE, FLEET_SIZE } from "./gameboard.js";
 
