@@ -1,4 +1,4 @@
-import { appendAndReplaceCells, renderBoard } from "./display.js";
+import { appendCells, renderBoard } from "./display.js";
 import { Ship } from "./ship.js";
 
 const contentDiv = document.querySelector("#content");
@@ -30,7 +30,7 @@ export class GameInfo {
     player.board.placeShip(ship, [0, 0]);
     player.board.placeShip(ship2, [4, 0], true);
 
-    appendAndReplaceCells(player, player.dom);
+    appendCells(player, player.dom);
   }
 
   endGame() {
@@ -79,8 +79,8 @@ export class GameInfo {
       if (this.activePlayer.isCPU) await new Promise(resolve => setTimeout(resolve, this.cpuMoveDelay));
     }
     lastMoveDiv.textContent = `${this.activePlayer.name} just attacked (${x}, ${y})`;
-    appendAndReplaceCells(enemy, enemy.dom);
-    // this.updateCell(enemy, x, y);
+    // renderCells(enemy, enemy.dom);
+    this.updateCell(enemy, x, y);
 
     if (outcome === "hit") {
       if (enemy.board.isDefeated()) {
@@ -109,7 +109,7 @@ export class GameInfo {
   updateCell(player, x, y) {
     let index = +x * BOARD_SIZE + +y;
     player.dom.children[index].classList.add("hit");
-    // contentDiv.c
+    //inside here use gameboard func to get all tiles of a ship if sunk and display fully?
   }
 
 }

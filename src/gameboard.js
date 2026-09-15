@@ -15,6 +15,10 @@ class Gameboard {
     }
   }
 
+  static getShipCoordinates(ship) {
+    return ship.coords;
+  }
+
   #validateFleetCount(length) {
     if (FLEET_SIZE[length] > this.#fleetCounts[length]) {
       return true;
@@ -73,13 +77,25 @@ class Gameboard {
     this.#ships.push(ship);
     this.#fleetCounts[ship.getLength()]++;
 
+    let coords = [];
+
     for (let i = 0; i < ship.getLength(); i++) {
+      let x;
+      let y;
       if (isVertical) {
+        x = origin[0] + i;
+        y = origin[1];
         this.#board[origin[0] + i][origin[1]] = ship;
       } else {
+        x = origin[0];
+        y = origin[1] + i;
         this.#board[origin[0]][origin[1] + i] = ship;
       }
+      this.#board[x][y] = ship;
+      coords.push([x, y]);
     }
+
+    ship.coords = coords;
   }
 
   receiveAttack(coordinates) {

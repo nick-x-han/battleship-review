@@ -9,11 +9,11 @@ export function renderBoard(player) {
   let boardDiv = document.createElement("div");
 
   boardDiv.classList.add("board");
-  appendAndReplaceCells(player, boardDiv);
+  appendCells(player, boardDiv);
   return boardDiv;
 }
 
-export function appendAndReplaceCells(player, parent) {
+export function appendCells(player, parent) {
   let board = player.board.board;
   parent.replaceChildren();
   for (let i = 0; i < BOARD_SIZE; i++) {
