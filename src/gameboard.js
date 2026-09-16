@@ -63,6 +63,18 @@ class Gameboard {
     return true;
   }
 
+  canRepositionShip(ship, origin, isVertical) {
+    if (!this.#ships.includes(ship)) {
+      return false;
+    }
+    if (!this.#checkBounds(ship, origin, isVertical)) {
+      return false;
+    }
+    if (this.#willOverlap(ship, origin, isVertical, true)) {
+      return false;
+    }
+    return true;
+  }
   repositionShip(ship, origin, isVertical = true) {
     if (!this.#ships.includes(ship)) {
       throw new Error("This ship isn't in this gameboard");
