@@ -5,7 +5,7 @@
 }
 
 .ship-outline {
-  border: 3px solid yellow;
+  /* border: 3px solid yellow; */
   position: absolute;
   pointer-events: auto;
 }
@@ -63,10 +63,6 @@ body {
   }
 }
 
-.dragging {
-  
-}
-
 .enemy {
   background-color: rgb(214, 154, 228);
 
@@ -76,47 +72,14 @@ body {
 }
 
 .player {
-  & .ship {
-    border-color: green;
-    border-width: 5px;
-  }
-  & .top-edge {
-    border-top: 1px solid green;
-  }
-
-  & .bottom-edge {
-    border-bottom: 1px solid green;
-  }
-
-  & .left-edge {
-    border-left: 1px solid green;
-  }
-
-  & .right-edge {
-    border-right: 1px solid green;
+  & .ship-outline {
+    border: 5px solid green;
   }
 }
 
 .sunk {
    &.ship {
-    border-color: green;
-    border-width: 5px;
-  }
-
-  &.top-edge {
-    border-top: 1px solid green;
-  }
-
-  &.bottom-edge {
-    border-bottom: 1px solid green;
-  }
-
-  &.left-edge {
-    border-left: 1px solid green;
-  }
-
-  &.right-edge {
-    border-right: 1px solid green;
+    border: 5px yellow solid;
   }
 }
 

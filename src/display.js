@@ -67,7 +67,6 @@ export function appendShips(player, parent) {
   let grabX;
   let grabY;
   let grabbed;
-  let grabbedIndex;
   const squareSide = parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
   );
@@ -121,32 +120,3 @@ export function appendShips(player, parent) {
   });
 }
 
-function adjustShipBorders(board, cellsParent) {
-  let coords = [];
-  let ships = board.getShips();
-  for (let ship of ships) {
-    coords.push(board.getShipCoordinates(ship));
-  }
-
-  for (let shipCoords of coords) {
-    editBorders(shipCoords, cellsParent);
-  }
-}
-
-function editBorders(coords, cellsParent) {
-  if (coords.length === 1) return;
-  let isVertical = coords[0][0] - coords[1][0] === 0 ? false : true;
-
-  for (let i = 0; i < coords.length; i++) {
-    let index = +coords[i][0] * BOARD_SIZE + +coords[i][1];
-    let cell = cellsParent.children[index];
-    if (i !== 0) {
-      if (isVertical) cell.classList.add("top-edge");
-      else cell.classList.add("left-edge");
-    }
-    if (i < coords.length - 1) {
-      if (isVertical) cell.classList.add("bottom-edge");
-      else cell.classList.add("right-edge");
-    }
-  }
-}
