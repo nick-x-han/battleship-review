@@ -24,6 +24,11 @@ class Gameboard {
     return this.#ships;
   }
 
+  isVertical(ship) {
+    let coords = this.getShipCoordinates(ship);
+    return coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
+  }
+
   #validateFleetCount(length) {
     if (FLEET_SIZE[length] > this.#fleetCounts[length]) {
       return true;
@@ -64,7 +69,7 @@ class Gameboard {
   }
 
   rotateShip(ship, origin, isVertical = true) {
-    
+    //uses repositionShip under the hood
   }
 
   canRepositionShip(ship, origin, isVertical) {
@@ -79,6 +84,7 @@ class Gameboard {
     }
     return true;
   }
+  
   repositionShip(ship, origin, isVertical = true) {
     if (!this.#ships.includes(ship)) {
       throw new Error("This ship isn't in this gameboard");
