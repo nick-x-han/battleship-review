@@ -14,5 +14,3 @@ initializeViews(500);
 
 
 //renderShips after each placement, but need separate function
-//fix how pointer leaves board -> only one cell stays inside
-//invalid red border

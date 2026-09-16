@@ -118,8 +118,22 @@ function enableShipDragging(player, parent) {
 
     let x = mouseX - grabX;
     let y = mouseY - grabY;
-    grabbed.style.left = `${Math.round(x / squareSide) * squareSide}px`;
-    grabbed.style.top = `${Math.round(y / squareSide) * squareSide}px`;
+    // snaps to grid
+    x = Math.round(x / squareSide) * squareSide;
+    y = Math.round(y / squareSide) * squareSide;
+
+    const boardSize = BOARD_SIZE * squareSide;
+
+    //offsetWidth is pixels width
+    const maxX = boardSize - grabbed.offsetWidth;
+    const maxY = boardSize - grabbed.offsetHeight;
+
+    // prevents exiting the board
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
+
+    grabbed.style.left = `${x}px`;
+    grabbed.style.top = `${y}px`;
 
     const column = parseFloat(grabbed.style.left) / squareSide;
     const row = parseFloat(grabbed.style.top) / squareSide;
