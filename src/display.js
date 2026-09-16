@@ -59,7 +59,7 @@ export function appendCells(player, parent) {
       parent.append(cell);
     }
   }
-  adjustShipBorders(player.board, parent);
+  // adjustShipBorders(player.board, parent);
   appendShips(player, parent);
 }
 
@@ -89,37 +89,35 @@ export function appendShips(player, parent) {
     shipObject.style.left = `${origin[1] * squareSide}px`;
     shipObject.style.top = `${origin[0] * squareSide}px`;
     shipObject.classList.add("ship-outline");
-    shipObject.draggable = true;
     shipObject.info = { ship, coords };
 
     parent.append(shipObject);
   }
-  parent.addEventListener("dragstart", (e) => {
-    if (e.target.classList.contains("ship-outline")) {
-      const rect = e.target.getBoundingClientRect();
-      grabX = e.clientX - rect.left;
-      grabY = e.clientY - rect.top;
-      grabbed = e.target;
-    }
+  parent.addEventListener("pointerdown", (e) => {
+    if (!e.target.classList.contains("ship-outline")) return;
+
+    const rect = e.target.getBoundingClientRect();
+
+    grabX = e.clientX - rect.left;
+    grabY = e.clientY - rect.top;
+    grabbed = e.target;
   });
-  parent.addEventListener("dragenter", (e) => {
-    e.preventDefault();
-    if (e.target.classList.contains("cell")) {
-      e.target.style.backgroundColor = "red";
-    }
+  parent.addEventListener("pointermove", (e) => {
+    if (!grabbed) return;
+
+    const boardRect = parent.getBoundingClientRect();
+
+    const mouseX = e.clientX - boardRect.left;
+    const mouseY = e.clientY - boardRect.top;
+
+    console.log(mouseX, mouseY);
+    let x = mouseX - grabX;
+    let y = mouseY - grabY;
+    grabbed.style.left = `${Math.round(x / squareSide) * squareSide}px`;
+    grabbed.style.top = `${Math.round(y / squareSide) * squareSide}px`;
   });
-  parent.addEventListener("drop", (e) => {
-    e.preventDefault();
-    let grabbedCell;
-    if (grabbed.info.ship.getLength() === 1) {
-      grabbedCell = 0;
-    } else {
-      let coords = grabbed.info.ship.coords;
-      let isVertical = coords[0][0] - coords[1][0] === 0 ? false : true;
-      if (isVertical) grabbedCell = Math.floor(grabY / squareSide);
-      else grabbedCell = Math.floor(grabX / squareSide);
-    }
-    console.log(grabbedCell);
+  parent.addEventListener("pointerup", (e) => {
+    grabbed = null;
   });
 }
 
