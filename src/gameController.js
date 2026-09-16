@@ -1,6 +1,7 @@
 import {
   editMessage,
   renderBoard,
+  renderShips,
   stopInteractivity,
   toggleClasses,
   updateCell,
@@ -77,12 +78,7 @@ export class GameController {
 
     if (attack.result === "hit") {
       if (attack.ship.isSunk()) {
-        let coords = enemy.board.getShipCoordinates(attack.ship);
-        for (let coord of coords) {
-          let index = +coord[0] * BOARD_SIZE + +coord[1];
-          let shipCell = enemy.dom.children[index];
-          shipCell.classList.add("sunk");
-        }
+        renderShips(enemy, enemy.dom);
       }
       if (enemy.board.isDefeated()) {
         editMessage(`${this.activePlayer.name} just won!`);

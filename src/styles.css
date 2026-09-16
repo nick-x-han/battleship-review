@@ -71,6 +71,10 @@ body {
   }
 }
 
+.ship-outline.sunk {
+  border: 5px solid red;
+}
+
 .player {
   & .ship-outline {
     border: 5px solid green;

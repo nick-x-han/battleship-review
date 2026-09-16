@@ -72,23 +72,24 @@ export function renderShips(player, parent) {
     outline.remove();
   });
   for (let ship of player.board.getShips()) {
-    let shipObject = document.createElement("div");
+    let shipOutline = document.createElement("div");
     const coords = player.board.getShipCoordinates(ship);
-    shipObject.style.width = `${squareSide}px`;
-    shipObject.style.height = `${squareSide}px`;
+    shipOutline.style.width = `${squareSide}px`;
+    shipOutline.style.height = `${squareSide}px`;
     if (player.board.isVertical(ship)) {
-      shipObject.style.height = `${squareSide * coords.length}px`;
+      shipOutline.style.height = `${squareSide * coords.length}px`;
     } else {
-      shipObject.style.width = `${squareSide * coords.length}px`;
+      shipOutline.style.width = `${squareSide * coords.length}px`;
     }
 
     let origin = coords[0];
-    shipObject.style.left = `${origin[1] * squareSide}px`;
-    shipObject.style.top = `${origin[0] * squareSide}px`;
-    shipObject.classList.add("ship-outline");
-    shipObject.info = { ship };
+    shipOutline.style.left = `${origin[1] * squareSide}px`;
+    shipOutline.style.top = `${origin[0] * squareSide}px`;
+    shipOutline.classList.add("ship-outline");
+    if (ship.isSunk()) shipOutline.classList.add("sunk");
+    shipOutline.info = { ship };
 
-    parent.append(shipObject);
+    parent.append(shipOutline);
   }
 }
 
