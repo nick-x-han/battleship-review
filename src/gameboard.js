@@ -68,10 +68,6 @@ class Gameboard {
     return true;
   }
 
-  rotateShip(ship, origin, isVertical = true) {
-    //uses repositionShip under the hood
-  }
-
   canRepositionShip(ship, origin, isVertical) {
     if (!this.#ships.includes(ship)) {
       return false;

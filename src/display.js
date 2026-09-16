@@ -1,6 +1,8 @@
 import { BOARD_SIZE } from "./gameboard.js";
 import "./styles.css";
 
+const DRAG_THRESHOLD = 5;
+
 const squareSide = parseFloat(
   getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
 );
@@ -96,21 +98,38 @@ export function renderShips(player, parent) {
 function enableShipDragging(player, parent) {
   let grabX;
   let grabY;
+  let startX;
+  let startY;
   let grabbed;
+  let isDragging = false;
   parent.onpointerdown = (e) => {
     if (!e.target.classList.contains("ship-outline")) return;
 
     parent.setPointerCapture(e.pointerId);
     const rect = e.target.getBoundingClientRect();
 
-    grabX = e.clientX - rect.left;
-    grabY = e.clientY - rect.top;
+    startX = e.clientX;
+    startY = e.clientY;
+    grabX = startX - rect.left;
+    grabY = startY - rect.top;
     grabbed = e.target;
-    grabbed.classList.add("dragging");
+
+    isDragging = false;
   };
   parent.onpointermove = (e) => {
     if (!grabbed) return;
 
+    //this is for rotation
+    const distance = Math.hypot(e.clientX - startX, e.clientY - startY);
+
+    if (distance >= DRAG_THRESHOLD) {
+      isDragging = true;
+      grabbed.classList.add("dragging");
+    }
+
+    if (!isDragging) return;
+
+    //this is for dragging
     const boardRect = parent.getBoundingClientRect();
 
     const mouseX = e.clientX - boardRect.left;
@@ -147,18 +166,26 @@ function enableShipDragging(player, parent) {
   };
   parent.onpointerup = () => {
     if (!grabbed) return;
-    const column = parseFloat(grabbed.style.left) / squareSide;
-    const row = parseFloat(grabbed.style.top) / squareSide;
-    try {
-      let ship = grabbed.info.ship;
-      let isVertical = player.board.isVertical(ship);
-      player.board.repositionShip(ship, [row, column], isVertical);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      grabbed = null;
-      renderShips(player, parent);
+    let ship = grabbed.info.ship;
+    let isVertical = player.board.isVertical(ship);
+    if (!isDragging) {
+      //rotate
+      let origin = player.board.getShipCoordinates(ship)[0];
+      if (player.board.canRepositionShip(ship, origin, !isVertical))
+        player.board.repositionShip(ship, origin, !isVertical);
+    } else {
+      //drag
+      const column = parseFloat(grabbed.style.left) / squareSide;
+      const row = parseFloat(grabbed.style.top) / squareSide;
+      if (player.board.canRepositionShip(ship, [row, column], isVertical)) {
+        player.board.repositionShip(ship, [row, column], isVertical);
+      }
     }
+    grabbed = null;
+    renderShips(player, parent);
   };
+  parent.onpointercancel = () => {
+    grabbed = null;
+    renderShips(player, parent);
+  }
 }
-

@@ -10,5 +10,6 @@ initializeViews(500);
 //returned actually amkes sense (+ don't need resetAll anymore)
   //BETTER: header is just "Battleship", content is what is modified
   //by views
-//properly shows sunk enemy ship
 
+//switching turns modal
+//rotating
