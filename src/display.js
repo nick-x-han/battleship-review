@@ -119,10 +119,16 @@ function enableShipDragging(player, parent) {
   parent.onpointermove = (e) => {
     if (!grabbed) return;
 
+    //if primary mouse button is not being held down
+    if (!(e.buttons & 1)) {
+      cancelDrag();
+      return;
+    }
+
     //this is for rotation
     const distance = Math.hypot(e.clientX - startX, e.clientY - startY);
 
-    if (distance >= DRAG_THRESHOLD) {
+    if (!isDragging && distance >= DRAG_THRESHOLD) {
       isDragging = true;
       grabbed.classList.add("dragging");
     }
@@ -182,10 +188,17 @@ function enableShipDragging(player, parent) {
       }
     }
     grabbed = null;
+    isDragging = false;
     renderShips(player, parent);
   };
-  parent.onpointercancel = () => {
+  parent.onpointercancel = cancelDrag;
+  parent.onlostpointercapture = cancelDrag;
+
+  function cancelDrag() {
+    if (!grabbed) return;
+
     grabbed = null;
+    isDragging = false;
     renderShips(player, parent);
   }
 }
