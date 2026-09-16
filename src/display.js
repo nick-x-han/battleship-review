@@ -90,13 +90,14 @@ export function appendShips(player, parent) {
     shipObject.style.left = `${origin[1] * squareSide}px`;
     shipObject.style.top = `${origin[0] * squareSide}px`;
     shipObject.classList.add("ship-outline");
-    shipObject.info = { ship, coords };
+    shipObject.info = { ship };
 
     parent.append(shipObject);
   }
   parent.addEventListener("pointerdown", (e) => {
     if (!e.target.classList.contains("ship-outline")) return;
 
+    parent.setPointerCapture(e.pointerId);
     const rect = e.target.getBoundingClientRect();
 
     grabX = e.clientX - rect.left;
@@ -124,7 +125,7 @@ export function appendShips(player, parent) {
     const row = parseFloat(grabbed.style.top) / squareSide;
     try {
       let ship = grabbed.info.ship;
-      let coords = grabbed.info.coords;
+      let coords = player.board.getShipCoordinates(ship);
       let isVertical = coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
       player.board.repositionShip(ship, [row, column], isVertical);
     } catch(error) {
@@ -134,10 +135,4 @@ export function appendShips(player, parent) {
     }
     grabbed = null;
   });
-  parent.addEventListener("blur", () => {
-    if (!grabbed) return;
-    grabbed.style.left = originalLeft;
-    grabbed.style.top = originalTop;
-    grabbed = null;
-  })
 }
