@@ -63,14 +63,14 @@ export function appendCells(player, parent) {
     }
   }
   renderShips(player, parent);
-  enableShipDragging(player, parent);
+  if (!parent.classList.contains("playing")) enableShipDragging(player, parent);
 }
 
 export function renderShips(player, parent) {
-  let previousOutlines = document.querySelectorAll(".ship-outline");
+  let previousOutlines = parent.querySelectorAll(".ship-outline");
   previousOutlines.forEach((outline) => {
     outline.remove();
-  })
+  });
   for (let ship of player.board.getShips()) {
     let shipObject = document.createElement("div");
     const coords = player.board.getShipCoordinates(ship);
@@ -99,7 +99,7 @@ function enableShipDragging(player, parent) {
   let grabX;
   let grabY;
   let grabbed;
-  parent.addEventListener("pointerdown", (e) => {
+  parent.onpointerdown = (e) => {
     if (!e.target.classList.contains("ship-outline")) return;
 
     parent.setPointerCapture(e.pointerId);
@@ -108,8 +108,8 @@ function enableShipDragging(player, parent) {
     grabX = e.clientX - rect.left;
     grabY = e.clientY - rect.top;
     grabbed = e.target;
-  });
-  parent.addEventListener("pointermove", (e) => {
+  };
+  parent.onpointermove = (e) => {
     if (!grabbed) return;
 
     const boardRect = parent.getBoundingClientRect();
@@ -121,8 +121,8 @@ function enableShipDragging(player, parent) {
     let y = mouseY - grabY;
     grabbed.style.left = `${Math.round(x / squareSide) * squareSide}px`;
     grabbed.style.top = `${Math.round(y / squareSide) * squareSide}px`;
-  });
-  parent.addEventListener("pointerup", () => {
+  };
+  parent.onpointerup = () => {
     if (!grabbed) return;
     const column = parseFloat(grabbed.style.left) / squareSide;
     const row = parseFloat(grabbed.style.top) / squareSide;
@@ -138,5 +138,5 @@ function enableShipDragging(player, parent) {
       grabbed = null;
       renderShips(player, parent);
     }
-  });
+  };
 }
