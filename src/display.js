@@ -67,6 +67,10 @@ export function appendCells(player, parent) {
 }
 
 export function renderShips(player, parent) {
+  let previousOutlines = document.querySelectorAll(".ship-outline");
+  previousOutlines.forEach((outline) => {
+    outline.remove();
+  })
   for (let ship of player.board.getShips()) {
     let shipObject = document.createElement("div");
     const coords = player.board.getShipCoordinates(ship);
@@ -95,8 +99,6 @@ function enableShipDragging(player, parent) {
   let grabX;
   let grabY;
   let grabbed;
-  let originalLeft;
-  let originalTop;
   parent.addEventListener("pointerdown", (e) => {
     if (!e.target.classList.contains("ship-outline")) return;
 
@@ -106,8 +108,6 @@ function enableShipDragging(player, parent) {
     grabX = e.clientX - rect.left;
     grabY = e.clientY - rect.top;
     grabbed = e.target;
-    originalLeft = grabbed.style.left;
-    originalTop = grabbed.style.top;
   });
   parent.addEventListener("pointermove", (e) => {
     if (!grabbed) return;
@@ -134,9 +134,9 @@ function enableShipDragging(player, parent) {
       player.board.repositionShip(ship, [row, column], isVertical);
     } catch (error) {
       console.log(error);
-      grabbed.style.left = originalLeft;
-      grabbed.style.top = originalTop;
+    } finally {
+      grabbed = null;
+      renderShips(player, parent);
     }
-    grabbed = null;
   });
 }
