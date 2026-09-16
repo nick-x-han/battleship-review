@@ -64,6 +64,10 @@ export function appendCells(player, parent) {
 }
 
 export function appendShips(player, parent) {
+  let grabX;
+  let grabY;
+  let grabbed;
+  let grabbedIndex;
   const squareSide = parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
   );
@@ -92,8 +96,30 @@ export function appendShips(player, parent) {
   }
   parent.addEventListener("dragstart", (e) => {
     if (e.target.classList.contains("ship-outline")) {
-      parent.append(document.createElement("button"));
+      const rect = e.target.getBoundingClientRect();
+      grabX = e.clientX - rect.left;
+      grabY = e.clientY - rect.top;
+      grabbed = e.target;
     }
+  });
+  parent.addEventListener("dragenter", (e) => {
+    e.preventDefault();
+    if (e.target.classList.contains("cell")) {
+      e.target.style.backgroundColor = "red";
+    }
+  });
+  parent.addEventListener("drop", (e) => {
+    e.preventDefault();
+    let grabbedCell;
+    if (grabbed.info.ship.getLength() === 1) {
+      grabbedCell = 0;
+    } else {
+      let coords = grabbed.info.ship.coords;
+      let isVertical = coords[0][0] - coords[1][0] === 0 ? false : true;
+      if (isVertical) grabbedCell = Math.floor(grabY / squareSide);
+      else grabbedCell = Math.floor(grabX / squareSide);
+    }
+    console.log(grabbedCell);
   });
 }
 

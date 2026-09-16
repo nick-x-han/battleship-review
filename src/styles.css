@@ -81,19 +81,19 @@ body {
     border-width: 5px;
   }
   & .top-edge {
-    border-top: none;
+    border-top: 1px solid green;
   }
 
   & .bottom-edge {
-    border-bottom: none;
+    border-bottom: 1px solid green;
   }
 
   & .left-edge {
-    border-left: none;
+    border-left: 1px solid green;
   }
 
   & .right-edge {
-    border-right: none;
+    border-right: 1px solid green;
   }
 }
 
@@ -104,19 +104,19 @@ body {
   }
 
   &.top-edge {
-    border-top: none;
+    border-top: 1px solid green;
   }
 
   &.bottom-edge {
-    border-bottom: none;
+    border-bottom: 1px solid green;
   }
 
   &.left-edge {
-    border-left: none;
+    border-left: 1px solid green;
   }
 
   &.right-edge {
-    border-right: none;
+    border-right: 1px solid green;
   }
 }
 
