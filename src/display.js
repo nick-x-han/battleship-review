@@ -105,6 +105,7 @@ function enableShipDragging(player, parent) {
     grabX = e.clientX - rect.left;
     grabY = e.clientY - rect.top;
     grabbed = e.target;
+    grabbed.classList.add("dragging");
   };
   parent.onpointermove = (e) => {
     if (!grabbed) return;

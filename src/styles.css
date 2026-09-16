@@ -74,10 +74,13 @@ body {
 .player {
   & .ship-outline {
     border: 5px solid green;
-    &.invalid {
-      border-color: red;
+    &.dragging {
+      border-color: yellow;
       border-style: dotted;
       z-index: 1;
+    }
+    &.invalid {
+      border-color: red;
     }
   }
 }
