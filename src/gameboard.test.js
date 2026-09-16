@@ -136,6 +136,32 @@ test("when ships are all sunk, defeated state", () => {
   expect(gameboard.isDefeated()).toBe(true);
 })
 
+test("can't reposition a ship that wasn't placed", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(3);
+  expect(() => gameboard.repositionShip(ship, [0, 1], false)).toThrow("This ship isn't in this gameboard");
+})
+test("can reposition ship on coords it used to be on", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(3);
+  let ship2 = new Ship(3);
+  gameboard.placeShip(ship, [0, 0], false);
+  gameboard.placeShip(ship2, [3, 0], false);
+  gameboard.repositionShip(ship, [0, 1], false);
+  expect(gameboard.board[0][0]).toBe(0);
+  expect(gameboard.board[0][1]).toBe(ship);
+})
+
+test("cannot reposition onto another ship", () => {
+  let gameboard = new Gameboard();
+  let ship = new Ship(3);
+  let ship2 = new Ship(3);
+  gameboard.placeShip(ship, [0, 0], false);
+  gameboard.placeShip(ship2, [3, 0], false);
+  expect(() => gameboard.repositionShip(ship, [3, 1], false)).toThrow("Cannot overlap onto another ship");
+})
+
+
 //idea: cell class to track attacked or not
 
 // make receive attack return the square's value prior to attack

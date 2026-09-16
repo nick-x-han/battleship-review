@@ -31,16 +31,17 @@ class Gameboard {
     return false;
   }
 
-  #willOverlap(ship, origin, isVertical) {
+  #willOverlap(ship, origin, isVertical, ignoreSelf = true) {
     for (let i = 0; i < ship.getLength(); i++) {
-      if (isVertical) {
-        if (this.#board[origin[0] + i][origin[1]] !== 0) {
-          return true;
+      let x = origin[0];
+      let y = origin[1];
+      if (isVertical) x += i;
+      else y += i;
+      if (this.#board[x][y] !== 0) {
+        if (ignoreSelf && this.#board[x][y] === ship) {
+          continue;
         }
-      } else {
-        if (this.#board[origin[0]][origin[1] + i] !== 0) {
-          return true;
-        }
+        return true;
       }
     }
     return false;
@@ -60,6 +61,40 @@ class Gameboard {
     if (origin[0] + ship.getLength() * vertical > BOARD_SIZE) return false;
     if (origin[1] + ship.getLength() * horizontal > BOARD_SIZE) return false;
     return true;
+  }
+
+  repositionShip(ship, origin, isVertical = true) {
+    if (!this.#ships.includes(ship)) {
+      throw new Error("This ship isn't in this gameboard");
+    }
+    if (!this.#checkBounds(ship, origin, isVertical)) {
+      throw new Error("Cannot place out-of-bounds ship");
+    }
+    if (this.#willOverlap(ship, origin, isVertical, true)) {
+      throw new Error("Cannot overlap onto another ship");
+    }
+
+    for (let coord of ship.coords) {
+      this.board[coord[0]][coord[1]] = 0;
+    }
+
+    let coords = [];
+
+    for (let i = 0; i < ship.getLength(); i++) {
+      let x;
+      let y;
+      if (isVertical) {
+        x = origin[0] + i;
+        y = origin[1];
+      } else {
+        x = origin[0];
+        y = origin[1] + i;
+      }
+      this.#board[x][y] = ship;
+      coords.push([x, y]);
+    }
+
+    ship.coords = coords;
   }
 
   placeShip(ship, origin, isVertical = true) {
@@ -90,11 +125,9 @@ class Gameboard {
       if (isVertical) {
         x = origin[0] + i;
         y = origin[1];
-        this.#board[origin[0] + i][origin[1]] = ship;
       } else {
         x = origin[0];
         y = origin[1] + i;
-        this.#board[origin[0]][origin[1] + i] = ship;
       }
       this.#board[x][y] = ship;
       coords.push([x, y]);
