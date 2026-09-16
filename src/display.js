@@ -67,6 +67,8 @@ export function appendShips(player, parent) {
   let grabX;
   let grabY;
   let grabbed;
+  let originalLeft;
+  let originalTop;
   const squareSide = parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
   );
@@ -100,6 +102,8 @@ export function appendShips(player, parent) {
     grabX = e.clientX - rect.left;
     grabY = e.clientY - rect.top;
     grabbed = e.target;
+    originalLeft = grabbed.style.left;
+    originalTop = grabbed.style.top;
   });
   parent.addEventListener("pointermove", (e) => {
     if (!grabbed) return;
@@ -109,14 +113,31 @@ export function appendShips(player, parent) {
     const mouseX = e.clientX - boardRect.left;
     const mouseY = e.clientY - boardRect.top;
 
-    console.log(mouseX, mouseY);
     let x = mouseX - grabX;
     let y = mouseY - grabY;
     grabbed.style.left = `${Math.round(x / squareSide) * squareSide}px`;
     grabbed.style.top = `${Math.round(y / squareSide) * squareSide}px`;
   });
-  parent.addEventListener("pointerup", (e) => {
+  parent.addEventListener("pointerup", () => {
+    if (!grabbed) return;
+    const column = parseFloat(grabbed.style.left) / squareSide;
+    const row = parseFloat(grabbed.style.top) / squareSide;
+    try {
+      let ship = grabbed.info.ship;
+      let coords = grabbed.info.coords;
+      let isVertical = coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
+      player.board.repositionShip(ship, [row, column], isVertical);
+    } catch(error) {
+      console.log(error);
+      grabbed.style.left = originalLeft;
+      grabbed.style.top = originalTop;
+    }
     grabbed = null;
   });
+  parent.addEventListener("blur", () => {
+    if (!grabbed) return;
+    grabbed.style.left = originalLeft;
+    grabbed.style.top = originalTop;
+    grabbed = null;
+  })
 }
-
