@@ -12,5 +12,3 @@ initializeViews(500);
   //by views
 
 
-
-//renderShips after each placement, but need separate function

@@ -76,12 +76,10 @@ export function renderShips(player, parent) {
     const coords = player.board.getShipCoordinates(ship);
     shipObject.style.width = `${squareSide}px`;
     shipObject.style.height = `${squareSide}px`;
-    if (coords.length > 1) {
-      if (isVertical(coords)) {
-        shipObject.style.height = `${squareSide * coords.length}px`;
-      } else {
-        shipObject.style.width = `${squareSide * coords.length}px`;
-      }
+    if (isVertical(coords)) {
+      shipObject.style.height = `${squareSide * coords.length}px`;
+    } else {
+      shipObject.style.width = `${squareSide * coords.length}px`;
     }
 
     let origin = coords[0];
