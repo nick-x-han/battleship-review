@@ -53,6 +53,10 @@ body {
   }
 }
 
+.dragging {
+  
+}
+
 .enemy {
   background-color: rgb(214, 154, 228);
 
