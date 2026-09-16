@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+.ship-outline {
+  /* border: 3px solid yellow; */
+  position: absolute;
+  pointer-events: auto;
+}
+
+.playing .ship-outline {
+  pointer-events: none;
+}
+
 :root {
   margin: 0;
   padding: 0;
@@ -114,6 +124,7 @@ body {
   display: grid;
   grid-template-columns: repeat(10, var(--cell-size));
   grid-template-rows: repeat(10, var(--cell-size));
+  position: relative;
 }
 
 #content {

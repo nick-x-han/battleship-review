@@ -35,6 +35,8 @@ export class GameController {
   }
 
   startGame() {
+    this.player1.dom.classList.add("playing");
+    this.player2.dom.classList.add("playing");
     editMessage(`Game started. ${this.activePlayer.name}'s turn.`);
     this.startTurn(this.player1, this.player2);
   }

@@ -1,6 +1,6 @@
 import "./styles.css";
-import { BOARD_SIZE } from "./gameboard.js";
 
+const BOARD_SIZE = 10;
 const lastMoveDiv = document.querySelector("#lastMove");
 
 export function editMessage(message) {
@@ -60,6 +60,41 @@ export function appendCells(player, parent) {
     }
   }
   adjustShipBorders(player.board, parent);
+  appendShips(player, parent);
+}
+
+export function appendShips(player, parent) {
+  const squareSide = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
+  );
+  for (let ship of player.board.getShips()) {
+    let shipObject = document.createElement("div");
+    const coords = player.board.getShipCoordinates(ship);
+    shipObject.style.width = `${squareSide}px`;
+    shipObject.style.height = `${squareSide}px`;
+    if (coords.length > 1) {
+      let isVertical = coords[1][0] - coords[0][0] === 0 ? false : true;
+      if (isVertical) {
+        shipObject.style.height = `${squareSide * coords.length}px`;
+      } else {
+        shipObject.style.width = `${squareSide * coords.length}px`;
+      }
+    }
+
+    let origin = coords[0];
+    shipObject.style.left = `${origin[1] * squareSide}px`;
+    shipObject.style.top = `${origin[0] * squareSide}px`;
+    shipObject.classList.add("ship-outline");
+    shipObject.draggable = true;
+    shipObject.info = { ship, coords };
+
+    parent.append(shipObject);
+  }
+  parent.addEventListener("dragstart", (e) => {
+    if (e.target.classList.contains("ship-outline")) {
+      parent.append(document.createElement("button"));
+    }
+  });
 }
 
 function adjustShipBorders(board, cellsParent) {
