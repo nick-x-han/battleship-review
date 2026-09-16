@@ -77,8 +77,7 @@ export function renderShips(player, parent) {
     shipObject.style.width = `${squareSide}px`;
     shipObject.style.height = `${squareSide}px`;
     if (coords.length > 1) {
-      let isVertical = coords[1][0] - coords[0][0] === 0 ? false : true;
-      if (isVertical) {
+      if (isVertical(coords)) {
         shipObject.style.height = `${squareSide * coords.length}px`;
       } else {
         shipObject.style.width = `${squareSide * coords.length}px`;
@@ -121,6 +120,17 @@ function enableShipDragging(player, parent) {
     let y = mouseY - grabY;
     grabbed.style.left = `${Math.round(x / squareSide) * squareSide}px`;
     grabbed.style.top = `${Math.round(y / squareSide) * squareSide}px`;
+
+    const column = parseFloat(grabbed.style.left) / squareSide;
+    const row = parseFloat(grabbed.style.top) / squareSide;
+    let ship = grabbed.info.ship;
+    let coords = player.board.getShipCoordinates(ship);
+    const invalid = !player.board.canRepositionShip(
+      ship,
+      [row, column],
+      isVertical(coords),
+    );
+    grabbed.classList.toggle("invalid", invalid);
   };
   parent.onpointerup = () => {
     if (!grabbed) return;
@@ -129,9 +139,7 @@ function enableShipDragging(player, parent) {
     try {
       let ship = grabbed.info.ship;
       let coords = player.board.getShipCoordinates(ship);
-      let isVertical =
-        coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
-      player.board.repositionShip(ship, [row, column], isVertical);
+      player.board.repositionShip(ship, [row, column], isVertical(coords));
     } catch (error) {
       console.log(error);
     } finally {
@@ -139,4 +147,8 @@ function enableShipDragging(player, parent) {
       renderShips(player, parent);
     }
   };
+}
+
+function isVertical(coords) {
+  return coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
 }

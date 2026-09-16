@@ -74,11 +74,16 @@ body {
 .player {
   & .ship-outline {
     border: 5px solid green;
+    &.invalid {
+      border-color: red;
+      border-style: dotted;
+      z-index: 1;
+    }
   }
 }
 
 .sunk {
-   &.ship {
+  &.ship {
     border: 5px yellow solid;
   }
 }
