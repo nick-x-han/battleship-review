@@ -1,6 +1,9 @@
+import { BOARD_SIZE } from "./gameboard.js";
 import "./styles.css";
 
-const BOARD_SIZE = 10;
+const squareSide = parseFloat(
+  getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
+);
 const lastMoveDiv = document.querySelector("#lastMove");
 
 export function editMessage(message) {
@@ -59,19 +62,11 @@ export function appendCells(player, parent) {
       parent.append(cell);
     }
   }
-  // adjustShipBorders(player.board, parent);
-  appendShips(player, parent);
+  renderShips(player, parent);
+  enableShipDragging(player, parent);
 }
 
-export function appendShips(player, parent) {
-  let grabX;
-  let grabY;
-  let grabbed;
-  let originalLeft;
-  let originalTop;
-  const squareSide = parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue("--cell-size"),
-  );
+export function renderShips(player, parent) {
   for (let ship of player.board.getShips()) {
     let shipObject = document.createElement("div");
     const coords = player.board.getShipCoordinates(ship);
@@ -94,6 +89,14 @@ export function appendShips(player, parent) {
 
     parent.append(shipObject);
   }
+}
+
+function enableShipDragging(player, parent) {
+  let grabX;
+  let grabY;
+  let grabbed;
+  let originalLeft;
+  let originalTop;
   parent.addEventListener("pointerdown", (e) => {
     if (!e.target.classList.contains("ship-outline")) return;
 
@@ -126,9 +129,10 @@ export function appendShips(player, parent) {
     try {
       let ship = grabbed.info.ship;
       let coords = player.board.getShipCoordinates(ship);
-      let isVertical = coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
+      let isVertical =
+        coords.length > 1 && coords[1][0] - coords[0][0] === 0 ? false : true;
       player.board.repositionShip(ship, [row, column], isVertical);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       grabbed.style.left = originalLeft;
       grabbed.style.top = originalTop;
