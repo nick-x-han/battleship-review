@@ -98,6 +98,8 @@ export class GameController {
   }
 
   #onClickEnemyBoard(e, enemy) {
+    if (!e.target.classList.contains("cell")) return;
+    
     let x = e.target.dataset.row;
     let y = e.target.dataset.column;
     this.#makeMove(enemy, x, y);

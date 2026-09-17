@@ -162,9 +162,9 @@ function gameView() {
 
   let containerDiv = document.createElement("div");
 
-  if (player1.board.getShips() < BOARD_SIZE)
+  if (player1.board.getShips().length < BOARD_SIZE)
     player1.placeShipsRandom();
-  if (player2.board.getShips() < BOARD_SIZE)
+  if (player2.board.getShips().length < BOARD_SIZE)
     player2.placeShipsRandom();
 
   appendCells(player1, player1.dom);

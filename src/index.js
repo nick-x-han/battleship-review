@@ -11,4 +11,6 @@ initializeViews(500);
   //BETTER: header is just "Battleship", content is what is modified
   //by views
 
-//switching turns modal
+
+//most recent attack is colored
+//cpu chooses from specifi selction
