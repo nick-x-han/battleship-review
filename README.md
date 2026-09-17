@@ -1,6 +1,6 @@
-# webpack-template-review
+# Battleship
 
-This is the template created from [The Odin Project's Revisiting Webpack lesson](https://www.theodinproject.com/lessons/node-path-javascript-revisiting-webpack).
+This uses my template created from [The Odin Project's Revisiting Webpack lesson](https://www.theodinproject.com/lessons/node-path-javascript-revisiting-webpack). This is an implementation of Battleship. 
 
 ## Setup
 
