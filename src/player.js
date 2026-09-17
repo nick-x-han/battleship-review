@@ -2,10 +2,10 @@ import { Gameboard, generateRandomCoordinates } from "./gameboard.js";
 import { Ship } from "./ship.js";
 
 class Player {
-  constructor(name, isCPU) {
+  constructor(name) {
     this.name = name;
     this.board = new Gameboard();
-    this.isCPU = isCPU;
+    this.isCPU = false;
   }
 
   attack(player, coordinates) {
@@ -33,4 +33,12 @@ class Player {
   }
 }
 
-export { Player };
+class CPU extends Player {
+  constructor(name) {
+    super(name);
+    this.isCPU = true;
+    this.hits = []; 
+  }
+}
+
+export { Player, CPU };

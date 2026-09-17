@@ -1,6 +1,6 @@
 import { appendCells, renderBoard } from "./display.js";
 import { GameController } from "./gameController.js";
-import { Player } from "./player.js";
+import { CPU, Player } from "./player.js";
 import { BOARD_SIZE } from "./gameboard.js";
 
 let headerDiv = document.querySelector("#header");
@@ -79,8 +79,8 @@ function onConfirmNames(name1, name2, selected1, selected2) {
   let isCPU1 = selected1 === "CPU" ? true : false;
   let isCPU2 = selected2 === "CPU" ? true : false;
 
-  const player1 = new Player(name1, isCPU1);
-  const player2 = new Player(name2, isCPU2);
+  const player1 = isCPU1 ? new CPU(name1) : new Player(name1);
+  const player2 = isCPU2 ? new CPU(name2) : new Player(name2);
   game = new GameController(player1, player2, cpuDelay);
 
   if (!player1.isCPU) queueView(() => placeShipsView(player1), contentDiv);
