@@ -14,3 +14,4 @@ initializeViews(500);
 
 //most recent attack is colored
 //cpu chooses from specifi selction
+//replace generaterandomcoords and use canPlace?

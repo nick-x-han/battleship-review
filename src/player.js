@@ -58,60 +58,68 @@ class CPU extends Player {
         this.hits.delete(ship);
       }
     }
+    if (result !== "repeat") {
+      this.availableCoordinates = this.availableCoordinates.filter(
+        ([x, y]) => x !== coordinates[0] || y !== coordinates[1],
+      );
+    }
 
     return { result, ship };
   }
   chooseCoordinates(board) {
-    if (this.hits.size === 0) return generateRandomCoordinates();
-    console.log(this.hits);
-    let targetShip = this.hits.entries().reduce((previous, current) => {
-      if (previous[1].length > current[1].length) return previous;
-      return current;
-    });
-    console.log(targetShip);
-    let [ship, coords] = targetShip;
-    let axis = board.isVertical(ship) ? 0 : 1;
-    coords.sort((a, b) => {
-      if (a[axis] > b[axis]) return 1;
-      if (a[axis] === b[axis]) return 0;
-      if (a[axis] < b[axis]) return -1;
-    });
-    let directions;
-    if (coords.length > 1) {
-      let leftTop = coords[0];
-      let rightBottom = coords.at(-1);
-      if (board.isVertical(ship)) {
-        directions = [
-          [leftTop[0] - 1, leftTop[1]],
-          [rightBottom[0] + 1, rightBottom[1]],
-        ];
-      } else {
-        directions = [
-          [leftTop[0], leftTop[1] - 1],
-          [rightBottom[0], rightBottom[1] + 1],
-        ];
-      }
-    } else {
-      const [x, y] = coords[0];
-      directions = [
-        [x - 1, y],
-        [x, y - 1],
-        [x + 1, y],
-        [x, y + 1],
-      ];
-    }
+    if (this.hits.size > 0) {
+      let targetShip = this.hits.entries().reduce((previous, current) => {
+        if (previous[1].length > current[1].length) return previous;
+        return current;
+      });
 
-    if (directions) {
-      directions = directions.filter((coord) =>
-        checkValidTarget(board.board, coord),
-      );
-      if (directions.length > 0) {
-        const randomIndex = Math.floor(Math.random() * directions.length);
-        return directions[randomIndex];
+      let [ship, coords] = targetShip;
+      let axis = board.isVertical(ship) ? 0 : 1;
+      coords.sort((a, b) => {
+        if (a[axis] > b[axis]) return 1;
+        if (a[axis] === b[axis]) return 0;
+        if (a[axis] < b[axis]) return -1;
+      });
+      let directions;
+      if (coords.length > 1) {
+        let leftTop = coords[0];
+        let rightBottom = coords.at(-1);
+        if (board.isVertical(ship)) {
+          directions = [
+            [leftTop[0] - 1, leftTop[1]],
+            [rightBottom[0] + 1, rightBottom[1]],
+          ];
+        } else {
+          directions = [
+            [leftTop[0], leftTop[1] - 1],
+            [rightBottom[0], rightBottom[1] + 1],
+          ];
+        }
+      } else {
+        const [x, y] = coords[0];
+        directions = [
+          [x - 1, y],
+          [x, y - 1],
+          [x + 1, y],
+          [x, y + 1],
+        ];
+      }
+
+      if (directions) {
+        directions = directions.filter((coord) =>
+          checkValidTarget(board.board, coord),
+        );
+        if (directions.length > 0) {
+          const randomIndex = Math.floor(Math.random() * directions.length);
+          return directions[randomIndex];
+        }
       }
     }
-    console.log("OOPS");
-    return generateRandomCoordinates();
+    const randomIndex = Math.floor(
+      Math.random() * this.availableCoordinates.length,
+    );
+
+    return this.availableCoordinates[randomIndex];
   }
 }
 
