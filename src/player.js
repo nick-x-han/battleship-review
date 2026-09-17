@@ -15,16 +15,45 @@ class Player {
   placeShipsRandom() {
     this.resetShips();
     let shipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-    while (shipLengths.length > 0) {
-      let isVertical = Math.random() < 0.5;
-      let [x, y] = generateRandomCoordinates(shipLengths[0] - 1, isVertical);
-      try {
-        let ship = new Ship(shipLengths[0]);
-        this.board.placeShip(ship, [x, y], isVertical);
-        shipLengths.shift();
-      } catch (error) {
-        console.log(error);
+    let availableCoordinates = [];
+    let occupiedCoordinates = [];
+
+    for (let x = 0; x < BOARD_SIZE; x++) {
+      for (let y = 0; y < BOARD_SIZE; y++) {
+        availableCoordinates.push([x, y]);
       }
+    }
+    for (const length of shipLengths) {
+      let isVertical = Math.random() < 0.5;
+      let maxAxis = BOARD_SIZE - length + 1;
+      let axis = isVertical ? 0 : 1;
+      let otherAxis = isVertical ? 1 : 0;
+
+      let currentCoordinates = availableCoordinates.filter(
+        (coord) => coord[axis] < maxAxis,
+      );
+
+      occupiedCoordinates.forEach((shipCoord) => {
+        currentCoordinates = currentCoordinates.filter((currentCoord) => {
+          let axisDiff = shipCoord[axis] - currentCoord[axis];
+          return !(
+            currentCoord[otherAxis] === shipCoord[otherAxis] &&
+            axisDiff < length &&
+            axisDiff >= 0
+          );
+        });
+      });
+
+      let ship = new Ship(length);
+      let randomOrigin = generateRandomCoordinate(currentCoordinates);
+      if (currentCoordinates.length === 0) {
+        return this.placeShipsRandom();
+      }
+      this.board.placeShip(ship, randomOrigin, isVertical);
+      let coords = this.board.getShipCoordinates(ship);
+      coords.forEach((coord) => {
+        occupiedCoordinates.push(coord);
+      });
     }
   }
 
@@ -132,15 +161,10 @@ function checkValidTarget(board, coord) {
   return false;
 }
 
-export function generateRandomCoordinates(offset = 0, isVertical = true) {
-  let bottomOffset = 0;
-  let rightOffset = 0;
-  if (isVertical) bottomOffset = offset;
-  else rightOffset = offset;
+function generateRandomCoordinate(coordsList) {
+  const randomIndex = Math.floor(Math.random() * coordsList.length);
 
-  let x = Math.floor(Math.random() * (10 - bottomOffset));
-  let y = Math.floor(Math.random() * (10 - rightOffset));
-  return [x, y];
+  return coordsList[randomIndex];
 }
 
 export { Player, CPU };
