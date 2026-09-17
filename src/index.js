@@ -12,4 +12,3 @@ initializeViews(500);
   //by views
 
 //switching turns modal
-//rotating

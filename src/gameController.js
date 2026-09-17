@@ -9,6 +9,7 @@ import {
 import { generateRandomCoordinates } from "./gameboard.js";
 
 const BOARD_SIZE = 10;
+const modal = document.querySelector("dialog");
 
 export class GameController {
   constructor(player1, player2, cpuMoveDelay = 0) {
@@ -89,6 +90,7 @@ export class GameController {
       this.startTurn(this.activePlayer, enemy);
       return;
     }
+    if (!enemy.isCPU && !this.activePlayer.isCPU) modal.showPopover();
     this.switchTurn();
   }
   #cpuMove(enemy) {

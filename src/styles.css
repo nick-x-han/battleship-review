@@ -124,7 +124,29 @@ body {
 .two-items-vertical {
   display: flex;
   flex-direction: column;
-  height: 50px;
+  /* height: 50px; */
   justify-content: space-between;
   align-items: center;
+}
+
+.dialog-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 90vw;
+  height: 90vh;
+  color: red;
+  background-color: black;
+  & h1 {
+    font-size: 2rem;
+  }
+
+  & button {
+    background-color: red;
+    border: 3px solid red;
+    border-radius: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+  }
 }
