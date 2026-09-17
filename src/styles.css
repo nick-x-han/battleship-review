@@ -71,6 +71,14 @@ body {
   }
 }
 
+.most-recent {
+  color: blue;
+  border-width: 2px;
+  &::after {
+    content: "⬤";
+  }
+}
+
 .enemy {
   background-color: rgb(214, 154, 228);
 
@@ -94,12 +102,6 @@ body {
     &.invalid {
       border-color: red;
     }
-  }
-}
-
-.sunk {
-  &.ship {
-    border: 5px yellow solid;
   }
 }
 

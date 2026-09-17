@@ -29,6 +29,10 @@ export function toggleClasses(player, enemy) {
 }
 
 export function updateCell(cell, value) {
+  let lastCell = cell.parentElement.lastCell;
+  if (lastCell) lastCell.classList.remove("most-recent");
+  cell.classList.add("most-recent");
+  cell.parentElement.lastCell = cell;
   if (value === -1) {
     cell.classList.add("missed");
   } else if (value === 1) {
