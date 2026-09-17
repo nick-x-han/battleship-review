@@ -22,6 +22,14 @@
   overflow: hidden;
   --cell-size: 30px;
   background-color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#title {
+  color: red;
+  margin: 0 auto;
 }
 
 body {
