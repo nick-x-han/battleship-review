@@ -6,7 +6,6 @@ import {
   toggleClasses,
   updateCell,
 } from "./display.js";
-import { generateRandomCoordinates } from "./player.js";
 
 const BOARD_SIZE = 10;
 const modal = document.querySelector("dialog");
@@ -94,7 +93,7 @@ export class GameController {
     this.switchTurn();
   }
   #cpuMove(enemy) {
-    let [x, y] = this.activePlayer.chooseAttack();
+    let [x, y] = this.activePlayer.chooseCoordinates(enemy.board);
     this.#makeMove(enemy, x, y);
   }
 
