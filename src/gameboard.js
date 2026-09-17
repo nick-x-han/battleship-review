@@ -184,15 +184,4 @@ class Gameboard {
   }
 }
 
-export function generateRandomCoordinates(offset = 0, isVertical = true) {
-  let bottomOffset = 0;
-  let rightOffset = 0;
-  if (isVertical) bottomOffset = offset;
-  else rightOffset = offset;
-
-  let x = Math.floor(Math.random() * (10 - bottomOffset));
-  let y = Math.floor(Math.random() * (10 - rightOffset));
-  return [x, y];
-}
-
 export { Gameboard };

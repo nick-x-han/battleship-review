@@ -1,4 +1,4 @@
-import { Gameboard, generateRandomCoordinates } from "./gameboard.js";
+import { Gameboard } from "./gameboard.js";
 import { Ship } from "./ship.js";
 
 class Player {
@@ -39,6 +39,26 @@ class CPU extends Player {
     this.isCPU = true;
     this.hits = []; 
   }
+
+  registerHit() {
+    
+  }
+  chooseAttack() {
+
+
+    return generateRandomCoordinates();
+  }
+}
+
+export function generateRandomCoordinates(offset = 0, isVertical = true) {
+  let bottomOffset = 0;
+  let rightOffset = 0;
+  if (isVertical) bottomOffset = offset;
+  else rightOffset = offset;
+
+  let x = Math.floor(Math.random() * (10 - bottomOffset));
+  let y = Math.floor(Math.random() * (10 - rightOffset));
+  return [x, y];
 }
 
 export { Player, CPU };

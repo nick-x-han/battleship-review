@@ -6,7 +6,7 @@ import {
   toggleClasses,
   updateCell,
 } from "./display.js";
-import { generateRandomCoordinates } from "./gameboard.js";
+import { generateRandomCoordinates } from "./player.js";
 
 const BOARD_SIZE = 10;
 const modal = document.querySelector("dialog");
@@ -62,7 +62,7 @@ export class GameController {
   async #makeMove(enemy, x, y) {
     x = Number(x);
     y = Number(y);
-    let attack = enemy.board.receiveAttack([x, y]);
+    let attack = this.activePlayer.attack(enemy, [x, y]);
     if (attack.result === "repeat") {
       this.startTurn(this.activePlayer, enemy);
       return;
@@ -94,7 +94,7 @@ export class GameController {
     this.switchTurn();
   }
   #cpuMove(enemy) {
-    let [x, y] = generateRandomCoordinates();
+    let [x, y] = this.activePlayer.chooseAttack();
     this.#makeMove(enemy, x, y);
   }
 
