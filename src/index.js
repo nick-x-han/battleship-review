@@ -6,6 +6,8 @@ initializeViews(500);
 
 //switch sides so active player always on left
 
+//adjacency not allowed?
+
 //each view has its own header and content so that the single view 
 //returned actually amkes sense (+ don't need resetAll anymore)
   //BETTER: header is just "Battleship", content is what is modified
