@@ -38,6 +38,13 @@ class CPU extends Player {
     super(name);
     this.isCPU = true;
     this.hits = new Map();
+    this.availableCoordinates = [];
+
+    for (let x = 0; x < BOARD_SIZE; x++) {
+      for (let y = 0; y < BOARD_SIZE; y++) {
+        this.availableCoordinates.push([x, y]);
+      }
+    }
   }
 
   attack(player, coordinates) {
@@ -56,10 +63,12 @@ class CPU extends Player {
   }
   chooseCoordinates(board) {
     if (this.hits.size === 0) return generateRandomCoordinates();
+    console.log(this.hits);
     let targetShip = this.hits.entries().reduce((previous, current) => {
       if (previous[1].length > current[1].length) return previous;
       return current;
     });
+    console.log(targetShip);
     let [ship, coords] = targetShip;
     let axis = board.isVertical(ship) ? 0 : 1;
     coords.sort((a, b) => {
@@ -94,14 +103,14 @@ class CPU extends Player {
 
     if (directions) {
       directions = directions.filter((coord) =>
-        checkValidTarget(coord, board.board),
+        checkValidTarget(board.board, coord),
       );
       if (directions.length > 0) {
         const randomIndex = Math.floor(Math.random() * directions.length);
         return directions[randomIndex];
       }
     }
-
+    console.log("OOPS");
     return generateRandomCoordinates();
   }
 }
